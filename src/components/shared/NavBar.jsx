@@ -36,7 +36,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 ">
+    <div className="fixed top-0 left-0 w-full z-50 py-3">
       <div className="drawer z-50">
         <input
           id="Clubero-drawer"
@@ -47,7 +47,7 @@ const NavBar = () => {
         />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
-          <div className="navbar  max-w-[1432px] mx-auto px-4">
+          <div className="navbar  max-w-[1500px] mx-auto px-4">
             {/* Logo */}
             <div className=" navbar-start">
               <Link
@@ -55,7 +55,7 @@ const NavBar = () => {
                   window.scrollTo(0, 0);
                 }}
                 to="/"
-                className="text-[25px] flex tracking-tight playfair font-extrabold text-[#ff4a79] "
+                className="text-[25px] flex font-[Neusans-bold] font-extrabold text-[#ff4a79] "
               >
                 <RiCloudWindyFill /> clubero
               </Link>
@@ -67,18 +67,18 @@ const NavBar = () => {
             </div>
 
             {/* Right */}
-            <div className="navbar-end  flex items-center gap-3">
+            <div className="navbar-end  flex items-center gap-2">
               {!user && (
                 <>
                   <Link
                     to="/login"
-                    className="hidden md:flex  text-secondary hover:bg-secondary hover:text-base-100 transition-colors"
+                    className="hidden md:flex  text-secondary hover:bg-black/6 px-3 py-1 rounded-full duration-200 text-base font-medium tracking-tight"
                   >
-                    Login
+                    Log in
                   </Link>
                   <Link
                     to="/register"
-                    className="hidden rounded-full md:flex btn  bg-secondary text-base-100 hover:bg-secondary/80 transition-colors  py-4"
+                    className="hidden rounded-full md:flex btn font-medium  bg-secondary text-base-100 hover:bg-primary duration-300  py-4"
                   >
                     Register
                   </Link>
@@ -147,13 +147,13 @@ const NavBar = () => {
                   {" "}
                   <Link
                     to="/login"
-                    className="btn btn-outline border-secondary text-secondary hover:bg-secondary hover:text-base-100"
+                    className="btn btn-outline border-secondary text-secondary hover:bg-secondary hover:text-base-100 rounded-full"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="btn bg-secondary text-base-100 hover:bg-secondary/80"
+                    className="btn bg-secondary font-medium rounded-full text-base-100 hover:bg-secondary/80"
                   >
                     Register
                   </Link>

@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
 @plugin "daisyui/theme" {
@@ -10,7 +9,24 @@
   --color-info: #464649;
 }
 
+@font-face {
+  font-family: Neusans-regular;
+  src: url(/fonts/NeuSans-Regular.1ca3b39b.woff2);
+}
+@font-face {
+  font-family: Neusans-medium;
+  src: url(/fonts/NeuSans-Medium.7b11edcf.woff2);
+}
+@font-face {
+  font-family: Neusans-bold;
+  src: url(/fonts/NeuSans-Bold.5c45f750.woff2);
+}
+
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Neusans-regular", sans-serif;
   background-image: url("./assets/background-noise.webp");
+}
+
+.button_primary{
+  @apply rounded-full font-[Neusans-medium] px-6.5 btn font-medium  bg-secondary text-base-100 hover:bg-primary duration-300  py-5.5
 }
