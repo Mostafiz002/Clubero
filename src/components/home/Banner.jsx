@@ -7,7 +7,7 @@ import heartBannerImg from "../../assets/heart.webp";
 
 const Banner = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1380px] mx-auto pt-20 px-4">
+    <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1380px] mx-auto pt-17 pb-20 px-4 min-h-[98vh] ">
       <img
         className="hidden lg:flex w-80"
         src={leftBannerImg}
@@ -23,8 +23,8 @@ const Banner = () => {
           <img className="w-9 h-9 mx-1 inline-block" src={heartBannerImg} />
           friendships.
         </h1>
-        <p className="my-6 w-full text-info md:w-120 text-center">Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Meetup. Events are happening every day—sign up to join the fun</p>
-        <button className="button_primary">Join Groups</button>
+        <p className="my-6 w-full text-info md:w-120 text-center">Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Clubero. Events are happening every day—sign up to join the fun</p>
+        <button className="button_primary hover:-translate-y-1 ">Join Groups</button>
       </div>
       <img
         className="hidden lg:flex w-80"

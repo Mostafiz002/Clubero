@@ -36,7 +36,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 py-3">
+    <div className=" w-full z-50 py-2.5 ">
       <div className="drawer z-50">
         <input
           id="Clubero-drawer"
