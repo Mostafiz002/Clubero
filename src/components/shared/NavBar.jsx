@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FaBars } from "react-icons/fa";
 import { RiCloudFill, RiCloudWindyFill } from "react-icons/ri";
+import { Slide } from "react-awesome-reveal";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);

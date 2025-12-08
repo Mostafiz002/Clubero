@@ -2,14 +2,20 @@ import React, { useState } from "react";
 import shakeImg from "../../assets/three-friends-shaking-hands.webp";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../components/shared/ErrrorMessage";
 import { SlCloudUpload } from "react-icons/sl";
 import GoogleBtn from "../../components/shared/GoogleBtn";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [fileName, setFileName] = useState("");
+  const { setUser, createUser, updateUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -17,7 +23,60 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegister = () => {};
+  const handleRegister = (data) => {
+    const profileImg = data.image[0];
+
+    createUser(data.email, data.password)
+      .then((res) => {
+        const user = res.user;
+
+        //store img
+        const formData = new FormData();
+        formData.append("image", profileImg);
+        axios
+          .post(
+            `https://api.imgbb.com/1/upload?key=${
+              import.meta.env.VITE_image_host_key
+            }`,
+            formData
+          )
+          .then((resp) => {
+            const photoURL = resp.data.data.url;
+
+            //update profile
+            const updateProfile = {
+              displayName: data.name,
+              photoURL: photoURL,
+            };
+            updateUser(updateProfile)
+              .then(() => {
+                setUser({ ...user, updateProfile });
+                navigate(location?.state || "/");
+                toast.success("Account create successfully");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch(() => {
+            toast.error("Something went wrong");
+          });
+      })
+      .catch((err) => {
+        let message = "";
+        switch (err.code) {
+          case "auth/email-already-in-use":
+            message = "This email is already registered.";
+            break;
+          case "auth/invalid-email":
+            message = "Please enter a valid email address.";
+            break;
+          default:
+            message = "An error occurred. Please try again.";
+        }
+        toast.error(message);
+      });
+  };
 
   return (
     <div className="py-20 flex items-center justify-center p-4">
