@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FaBars } from "react-icons/fa";
-import { RiCloudFill, RiCloudWindyFill } from "react-icons/ri";
+import { RiCloudWindyFill } from "react-icons/ri";
 import { Slide } from "react-awesome-reveal";
+import toast from "react-hot-toast";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser, logOut } = useAuth();
 
   const navLinkClass = ({ isActive }) =>
     `relative  py-1 text-sm font-medium transition-colors duration-300
@@ -35,6 +36,15 @@ const NavBar = () => {
       </li>
     </>
   );
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        toast.success("Logged out successfully");
+        setUser(null);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className=" w-full z-50 py-2.5 ">
@@ -96,7 +106,7 @@ const NavBar = () => {
               {user && (
                 <div className="relative inline-block group">
                   <div className="avatar cursor-pointer">
-                    <div className="w-8 rounded-full ring-2 ring-secondary">
+                    <div className="w-8 h-8 rounded-full ring-2 ring-secondary">
                       <img
                         src={
                           user?.photoURL ||
@@ -109,17 +119,13 @@ const NavBar = () => {
 
                   {/* Dropdown */}
                   <Slide direction="down" triggerOnce={false}>
-                    <div className="absolute right-0 mt-2 w-40 bg-base-200 text-base-content rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                      <div className="p-2 border-b border-base-content/20 text-center">
-                        <span className="font-medium ">
-                          {user?.displayName || "Guest"}
-                        </span>
-                      </div>
-                      <div className="p-2">
-                        <button className="btn-primary-one w-full! ">
-                          Logout
-                        </button>
-                      </div>
+                    <div className="absolute right-0 mt-2 w-40 bg-base-200 text-base-content rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-4">
+                      <button
+                        className="font-[Neusans-medium] text-sm cursor-pointer rounded-md bg-secondary text-base-100 hover:bg-primary transition-all duration-200 w-full py-2"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
                     </div>
                   </Slide>
                 </div>
