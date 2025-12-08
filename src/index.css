@@ -30,3 +30,4 @@ body {
 .button_primary{
   @apply rounded-full font-[Neusans-medium] px-6.5 btn font-medium  bg-secondary text-base-100 hover:bg-primary transition-all duration-200  py-5.5
 }
+

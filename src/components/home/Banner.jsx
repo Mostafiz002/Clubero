@@ -4,29 +4,103 @@ import rightBannerImg from "../../assets/hero-right.webp";
 import peopleBannerImg from "../../assets/people-1.webp";
 import ballBannerImg from "../../assets/ball.webp";
 import heartBannerImg from "../../assets/heart.webp";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "motion/react";
 
 const Banner = () => {
+  const textVariant = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.8, ease: "easeOut" },
+    }),
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1380px] mx-auto pt-17 pb-20 px-4 min-h-[98vh] ">
-      <img
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
         className="hidden lg:flex w-80"
         src={leftBannerImg}
         alt="Left Banner"
       />
-      <div className="col-span-2 mt-12 flex flex-col items-center">
-        <h1 className=" font-[Neusans-bold] text-center text-[40px]/12 text-primary">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        className="col-span-2 mt-12 flex flex-col items-center"
+      >
+        <motion.h1
+          variants={textVariant}
+          custom={1}
+          className=" font-[Neusans-bold] text-center text-[40px]/12 text-primary"
+        >
           <span>The</span>
-          <img className="w-9 h-9 mx-1 inline-block" src={peopleBannerImg} />
-          <span>people platform. <br/> Where</span>
-          <img className="w-9 h-9 mx-1 inline-block" src={ballBannerImg} />
-          <span>interests<br/>become</span>
-          <img className="w-9 h-9 mx-1 inline-block" src={heartBannerImg} />
+          <motion.img
+            animate={{
+              rotate: [0, 45, 45, 45, 0, 0, 0],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              times: [0, 0.5, 1],
+            }}
+            className="w-9 h-9 mx-1 inline-block"
+            src={peopleBannerImg}
+          />
+          <span>
+            people platform. <br /> Where
+          </span>
+          <motion.img
+            src={ballBannerImg}
+            className="w-9 h-9 mx-1 inline-block"
+            animate={{
+              rotate: [0, 0, 360, 360, 360, 0, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              times: [0, 0.4, 0.6, 1, 1],
+            }}
+          />
+          <span>
+            interests
+            <br />
+            become
+          </span>
+          <motion.img
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-9 h-9 mx-1 inline-block"
+            src={heartBannerImg}
+          />
           friendships.
-        </h1>
-        <p className="my-6 w-full text-info md:w-120 text-center">Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Clubero. Events are happening every day—sign up to join the fun</p>
-        <button className="button_primary hover:-translate-y-1 ">Join Groups</button>
-      </div>
-      <img
+        </motion.h1>
+        <motion.p
+          variants={textVariant}
+          custom={2}
+          className="my-6 w-full text-info md:w-120 text-center"
+        >
+          Whatever your interest, from hiking and reading to networking and
+          skill sharing, there are thousands of people who share it on Clubero.
+          Events are happening every day—sign up to join the fun.
+        </motion.p>
+        <motion.div variants={textVariant} custom={3}>
+          <button className="button_primary hover:-translate-y-1 ">
+            Join Groups
+          </button>
+        </motion.div>
+      </motion.div>
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
         className="hidden lg:flex w-80"
         src={rightBannerImg}
         alt="Right Banner"

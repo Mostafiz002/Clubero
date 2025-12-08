@@ -1,0 +1,28 @@
+import React from "react";
+
+const ErrorMessage = ({ message }) => {
+  return (
+    <div
+      role="alert"
+      className="bg-red-800 border-l-4 border-red-700 text-red-100 p-2 rounded-lg flex items-center transition duration-300 ease-in-out hover:bg-red-700 transform"
+    >
+      <svg
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        fill="none"
+        className="h-5 w-5 shrink-0 mr-2 text-red-600"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13 16h-1v-4h1m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          strokeWidth="2"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        ></path>
+      </svg>
+      <p className="text-xs font-semibold">{message}</p>
+    </div>
+  );
+};
+
+export default ErrorMessage;
