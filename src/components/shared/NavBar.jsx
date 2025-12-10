@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FaBars } from "react-icons/fa";
-import { RiCloudWindyFill } from "react-icons/ri";
 import { Slide } from "react-awesome-reveal";
 import toast from "react-hot-toast";
+import LogoImg from "../../assets/icons8-cloud-cross-48.png"
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser, logOut } = useAuth();
+  console.log(user)
 
   const navLinkClass = ({ isActive }) =>
     `relative  py-1 text-sm font-medium transition-colors duration-300
@@ -32,6 +33,28 @@ const NavBar = () => {
           className={navLinkClass}
         >
           Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+          to="/clubs"
+          className={navLinkClass}
+        >
+          Clubs
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+          to="/events"
+          className={navLinkClass}
+        >
+          Events
         </NavLink>
       </li>
     </>
@@ -68,7 +91,7 @@ const NavBar = () => {
                 to="/"
                 className="text-[25px] flex font-[Neusans-bold] font-extrabold text-[#ff4a79] "
               >
-                <RiCloudWindyFill /> clubero
+                <img className="w-9.5" src={LogoImg} alt="" /> clubero
               </Link>
             </div>
 
@@ -83,7 +106,7 @@ const NavBar = () => {
                 <>
                   <Link
                     to="/login"
-                    className="hidden md:flex  text-secondary hover:bg-black/6 px-3 py-1 rounded-full duration-200 text-base font-medium tracking-tight"
+                    className="hidden md:flex  text-secondary hover:bg-[#e6e6e6] px-3 pb-1 pt-0.5 rounded-full duration-200 text-base font-medium tracking-tight"
                   >
                     Log in
                   </Link>

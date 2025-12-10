@@ -10,7 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signIn } = useAuth();
+  const { signIn , loading} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -96,7 +96,7 @@ const Login = () => {
               <ErrorMessage message={errors.password.message} />
             )}
 
-            <button className="button_primary w-full! mt-2">Login</button>
+            <button className="button_primary w-full! mt-2"> {loading ? "Logging in..." : "Login"}</button>
           </form>
           <div className="divider my-6">or</div>
 

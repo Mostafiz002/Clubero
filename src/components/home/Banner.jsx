@@ -6,6 +6,7 @@ import ballBannerImg from "../../assets/ball.webp";
 import heartBannerImg from "../../assets/heart.webp";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
+import { Link } from "react-router";
 
 const Banner = () => {
   const textVariant = {
@@ -18,24 +19,24 @@ const Banner = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1380px] mx-auto pt-17 pb-20 px-4 min-h-[98vh] ">
+    <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1400px] mx-auto pt-0 lg:pt-17 pb-20 lg:pb-8 px-4 min-h-[80.5vh]">
       <motion.img
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="hidden lg:flex w-80"
+        className="hidden lg:flex w-77 "
         src={leftBannerImg}
         alt="Left Banner"
       />
       <motion.div
         initial="hidden"
         animate="visible"
-        className="col-span-2 mt-12 flex flex-col items-center"
+        className="col-span-2 mt-10 flex flex-col items-center"
       >
         <motion.h1
           variants={textVariant}
           custom={1}
-          className=" font-[Neusans-bold] text-center text-[40px]/12 text-primary"
+          className=" font-[Neusans-bold] text-center text-[32px]/10 md:text-[40px]/12 text-primary"
         >
           <span>The</span>
           <motion.img
@@ -92,16 +93,16 @@ const Banner = () => {
           Events are happening every day—sign up to join the fun.
         </motion.p>
         <motion.div variants={textVariant} custom={3}>
-          <button className="button_primary hover:-translate-y-1 ">
-            Join Groups
-          </button>
+          <Link to="/clubs" className="button_primary hover:-translate-y-1 ">
+            Join Clubs
+          </Link>
         </motion.div>
       </motion.div>
       <motion.img
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="hidden lg:flex w-80"
+        className="hidden lg:flex w-77"
         src={rightBannerImg}
         alt="Right Banner"
       />

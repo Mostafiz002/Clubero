@@ -8,14 +8,16 @@ import ErrorMessage from "../../components/shared/ErrrorMessage";
 import { SlCloudUpload } from "react-icons/sl";
 import GoogleBtn from "../../components/shared/GoogleBtn";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const Register = () => {
   const [fileName, setFileName] = useState("");
-  const { setUser, createUser, updateUser } = useAuth();
+  const { setUser, createUser, updateUser,loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -42,6 +44,16 @@ const Register = () => {
           )
           .then((resp) => {
             const photoURL = resp.data.data.url;
+
+            //create user in db
+            const userInfo = {
+              email: data.email,
+              displayName: data.name,
+              photoURL: photoURL,
+            };
+            axiosSecure.post("/users", userInfo).catch((error) => {
+              console.error("Failed to create user in DB:", error);
+            });
 
             //update profile
             const updateProfile = {
@@ -176,7 +188,7 @@ const Register = () => {
               <ErrorMessage message={errors.password.message} />
             )}
 
-            <button className="button_primary w-full! mt-2">Register</button>
+            <button className="button_primary w-full! mt-2"> {loading ? "Creating Account..." : "Register"}</button>
           </form>
           <div className="divider my-6">or</div>
 
@@ -204,7 +216,7 @@ const Register = () => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             src={shakeImg}
             alt="Register Illustration"
-            className="h-120 w-120 object-cover"
+            className="h-120 w-120 object-cover -mt-40"
           />
         </div>
       </div>

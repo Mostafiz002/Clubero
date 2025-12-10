@@ -12,39 +12,32 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //request interceptor
-    const requestInterceptor = axiosInstance.interceptors.request.use(
-      (config) => {
-        const token = user.accessToken;
-        if (token) {
-          config.headers.authorization = `Bearer ${token}`;
-        }
-        return config;
+    // Request interceptor
+    const requestInterceptor = axiosInstance.interceptors.request.use((config) => {
+      const token = user?.accessToken;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
-    );
+      return config;
+    });
 
-    //response interceptor
-    const responseInterceptor = axios.interceptors.response.use(
-      axiosInstance.interceptors.response.use(
-        (res) => {
-          return res;
-        },
-        (err) => {
-          const status = err.status;
-          if (status === 401 || status === 403) {
-            logOut().then(() => {
-              navigate("/register");
-            });
-          }
+    // Response interceptor
+    const responseInterceptor = axiosInstance.interceptors.response.use(
+      (res) => res,
+      (err) => {
+        const status = err.response?.status;
+        if (status === 401 || status === 403) {
+          logOut().then(() => navigate("/register"));
         }
-      )
+        return Promise.reject(err);
+      }
     );
 
     return () => {
       axiosInstance.interceptors.request.eject(requestInterceptor);
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
-  }, [user, navigate, logOut]);
+  }, [user, logOut, navigate]);
 
   return axiosInstance;
 };

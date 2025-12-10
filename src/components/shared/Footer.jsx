@@ -9,7 +9,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import footerImg from "../../assets/footer-grainy-background.png"
-import { RiCloudWindyFill } from "react-icons/ri";
+import LogoImg from "../../assets/icons8-cloud-cross-48.png"
 
 const Footer = () => {
   return (
@@ -31,7 +31,7 @@ const Footer = () => {
               to="/"
               className="text-[25px] flex font-[Neusans-bold] font-extrabold text-[#ff4a79] "
             >
-              <RiCloudWindyFill /> clubero
+               <img className="w-9.5" src={LogoImg} alt="" />  clubero
             </Link>
             <p className="mt-3 text-gray-400 max-w-xs">
             Whatever your interest, from reading to networking and skill sharing, there are thousands of people who share it on Clubero.
