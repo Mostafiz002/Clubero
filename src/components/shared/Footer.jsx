@@ -8,13 +8,17 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import footerImg from "../../assets/footer-grainy-background.png"
-import LogoImg from "../../assets/icons8-cloud-cross-48.png"
+import footerImg from "../../assets/footer-grainy-background.png";
+import LogoImg from "../../assets/icons8-cloud-cross-48.png";
 
 const Footer = () => {
+  const scrollTOTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="md:mx-4 mx-0">
-      <footer className="relative bg-primary text-gray-300 py-16 px-6 md:px-10 max-w-[1480px] md:mb-4 rounded-t-2xl md:rounded-2xl mx-auto overflow-hidden" >
+      <footer className="relative bg-primary text-gray-300 py-16 px-6 md:px-10 max-w-[1480px] md:mb-4 rounded-t-2xl md:rounded-2xl mx-auto overflow-hidden">
         <img
           className="absolute inset-0 h-full w-full object-cover"
           src={footerImg}
@@ -25,16 +29,15 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link
-              onClick={() => {
-                window.scrollTo(0, 0);
-              }}
+              onClick={scrollTOTop}
               to="/"
               className="text-[25px] flex font-[Neusans-bold] font-extrabold text-[#ff4a79] "
             >
-               <img className="w-9.5" src={LogoImg} alt="" />  clubero
+              <img className="w-9.5" src={LogoImg} alt="" /> clubero
             </Link>
             <p className="mt-3 text-gray-400 max-w-xs">
-            Whatever your interest, from reading to networking and skill sharing, there are thousands of people who share it on Clubero.
+              Whatever your interest, from reading to networking and skill
+              sharing, there are thousands of people who share it on Clubero.
             </p>
           </div>
 
@@ -45,8 +48,30 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link className="hover:text-accent transition hover:link" to="/">
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
+                  to="/"
+                >
                   Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
+                  to="/clubs"
+                >
+                  Clubs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
+                  to="/events"
+                >
+                  Events
                 </Link>
               </li>
             </ul>
@@ -57,7 +82,11 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-3">Services</h3>
             <ul className="space-y-2">
               <li>
-                <Link className="hover:text-accent transition hover:link" to="/">
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
+                  to="/"
+                >
                   Home
                 </Link>
               </li>
