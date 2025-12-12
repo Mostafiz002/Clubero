@@ -48,6 +48,7 @@ const UpcomingEvents = () => {
           </span>
         </h2>
         <Link
+          onClick={() => window.scrollTo(0, 0)}
           className="py-2 bg-transparent hover:bg-accent-content -mr-4  px-4 rounded-full text-accent font-[Neusans-medium]"
           to="/events"
         >

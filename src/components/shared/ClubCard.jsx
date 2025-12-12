@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const ClubCard = ({ club }) => {
   return (
-    <Link className="relative group hover:scale-98 duration-200 block">
+    <Link to={`/club-details/${club._id}`} className="relative group hover:scale-98 duration-200 block">
       <div className="relative overflow-hidden rounded-3xl">
         <img
           className="h-40 w-full object-cover rounded-3xl group-hover:scale-105 duration-300"

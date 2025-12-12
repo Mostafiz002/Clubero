@@ -12,7 +12,7 @@ const JoinClubero = () => {
       />
       <div className="relative z-10 bg-linear-to-br from-accent/15 to-accent/10  py-20 rounded-2xl flex flex-col items-center justify-center border border-black/10 px-4">
         <h2 className="heading relative">
-           Join Clubero
+          Join Clubero
           <span className="inline-block absolute -top-3 -right-9">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -45,11 +45,14 @@ const JoinClubero = () => {
           get out of their comfort zones, and pursue their passions, together.
           Membership is free.
         </p>
-        <Link to="/register" className="button_primary hover:-translate-y-1">
+        <Link
+          onClick={() => window.scrollTo(0, 0)}
+          to="/register"
+          className="button_primary hover:-translate-y-1"
+        >
           Sign up for free
         </Link>
       </div>
-
     </div>
   );
 };

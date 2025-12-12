@@ -48,6 +48,7 @@ const LatestClubs = () => {
           </span>
         </h2>
         <Link
+          onClick={() => window.scrollTo(0, 0)}
           className="py-2 bg-transparent hover:bg-accent-content -mr-4  px-4 rounded-full text-accent font-[Neusans-medium]"
           to="/clubs"
         >
@@ -55,9 +56,9 @@ const LatestClubs = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {
-          clubs.map(club =><ClubCard club={club} key={club._id}/>)
-        }
+        {clubs.map((club) => (
+          <ClubCard club={club} key={club._id} />
+        ))}
       </div>
     </div>
   );

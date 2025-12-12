@@ -10,7 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signIn , loading} = useAuth();
+  const { signIn , loading, setLoading} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,6 +48,8 @@ const Login = () => {
           message = "An unexpected error occurred. Please try again.";
       }
       toast.error(message);
+    }finally{
+      setLoading(false)
     }
   };
 

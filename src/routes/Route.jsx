@@ -6,12 +6,15 @@ import Register from "../pages/auth/Register";
 import Events from "../pages/Events";
 import Clubs from "../pages/Clubs";
 import Page404 from "../pages/Page404";
+import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
+import ClubDetails from "../pages/ClubDetails";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
-     errorElement: <Page404 />,
+    errorElement: <Page404 />,
     children: [
       {
         index: true,
@@ -30,9 +33,23 @@ export const router = createBrowserRouter([
         Component: Clubs,
       },
       {
+        path: "club-details/:id",
+        Component: ClubDetails,
+      },
+      {
         path: "events",
         Component: Events,
       },
     ],
+  },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    errorElement: <Page404 />,
+    children: [],
   },
 ]);

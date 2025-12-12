@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { Slide } from "react-awesome-reveal";
 import toast from "react-hot-toast";
-import LogoImg from "../../assets/icons8-cloud-cross-48.png"
+import LogoImg from "../../assets/icons8-cloud-cross-48.png";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser, logOut } = useAuth();
-  console.log(user)
+  console.log(user);
 
   const navLinkClass = ({ isActive }) =>
     `relative  py-1 text-sm font-medium transition-colors duration-300
@@ -129,7 +130,7 @@ const NavBar = () => {
               {user && (
                 <div className="relative inline-block group">
                   <div className="avatar cursor-pointer">
-                    <div className="min-w-8 h-8 rounded-full ring-2 ring-secondary">
+                    <div className="min-w-9 h-9 rounded-full ">
                       <img
                         src={
                           user?.photoURL ||
@@ -142,12 +143,20 @@ const NavBar = () => {
 
                   {/* Dropdown */}
                   <Slide direction="down" triggerOnce={false}>
-                    <div className="absolute right-0 mt-2 w-40 bg-base-200 text-base-content rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-4">
+                    <div className="absolute right-0 mt-2 w-40 bg-base-200 text-base-content rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-2 space-y-2">
+                      <Link className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
+                        <FaUser /> Profile
+                      </Link>
+
+                      <Link to="/dashboard" className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
+                        <TbLayoutDashboardFilled /> Dashboard
+                      </Link>
+
                       <button
-                        className="font-[Neusans-medium] text-sm cursor-pointer rounded-md bg-secondary text-base-100 hover:bg-primary transition-all duration-200 w-full py-2"
+                        className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md bg-red-500/50 text-red-600/70 hover:text-white hover:bg-red-600/70 transition-all duration-200 w-full py-2 px-2"
                         onClick={handleLogout}
                       >
-                        Logout
+                        <FaSignOutAlt /> Logout
                       </button>
                     </div>
                   </Slide>
