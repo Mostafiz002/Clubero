@@ -9,6 +9,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import { PulseLoader } from "react-spinners";
 
 const ClubDetails = () => {
   const axios = useAxios();
@@ -17,10 +18,9 @@ const ClubDetails = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  
 
   //single club data
-  const { data: club = [] } = useQuery({
+  const { data: club = [], isLoading } = useQuery({
     queryKey: ["club"],
     queryFn: async () => {
       const res = await axios(`/clubs/${id}`);
@@ -31,7 +31,7 @@ const ClubDetails = () => {
   //payment data
   const { data: payment = null, isLoading: paymentLoading } = useQuery({
     queryKey: ["single-payment", user?.email, club?._id],
-    enabled: !!user?.email && !!club?._id, 
+    enabled: !!user?.email && !!club?._id,
     queryFn: async () => {
       const res = await axiosSecure(
         `/payments/email/club?email=${user.email}&clubId=${club._id}`
@@ -65,6 +65,12 @@ const ClubDetails = () => {
       email: user.email,
     };
 
+    const membership = {
+      clubId: club._id,
+      clubName: club.clubName,
+      email: user.email,
+    };
+
     Swal.fire({
       title: "Proceed to Payment?",
       html: `
@@ -92,11 +98,17 @@ const ClubDetails = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await axiosSecure.post(
-            "/payment-checkout-session",
-            paymentInfo
-          );
-          window.location.assign(res.data.url);
+          if (paymentInfo.membershipFee === 0) {
+            axiosSecure.post("/membership", membership).then(() => {
+              navigate("/");
+            });
+          } else {
+            const res = await axiosSecure.post(
+              "/payment-checkout-session",
+              paymentInfo
+            );
+            window.location.assign(res.data.url);
+          }
         } catch {
           Swal.fire({
             icon: "error",
@@ -108,6 +120,14 @@ const ClubDetails = () => {
       }
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <PulseLoader color="#7a66d3" margin={2} size={13} />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[1232px] mx-auto px-4 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-5 gap-12">

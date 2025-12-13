@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const EventCard = ({ event }) => {
   return (
-    <Link
+    <Link  to={`/event-details/${event._id}`}
       onClick={() => window.scrollTo(0, 0)}
       className="relative group hover:scale-98 duration-200 block"
     >

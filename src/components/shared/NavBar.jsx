@@ -148,7 +148,7 @@ const NavBar = () => {
                         <FaUser /> Profile
                       </Link>
 
-                      <Link to="/dashboard" className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
+                      <Link to="/dashboard/overview" className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
                         <TbLayoutDashboardFilled /> Dashboard
                       </Link>
 

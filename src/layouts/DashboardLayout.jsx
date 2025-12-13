@@ -1,71 +1,85 @@
-import React, { useState } from "react";
-import { Outlet, Link } from "react-router";
-import { FaUser, FaHome, FaUsers, FaSignOutAlt } from "react-icons/fa";
+import { Link, Outlet } from "react-router";
+import LogoImg from "../assets/icons8-cloud-cross-48.png";
+import { FiMenu, FiHome, FiGrid, FiUsers } from "react-icons/fi";
 
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const menuItems = [
-    { name: "Home", icon: <FaHome />, path: "/dashboard" },
-    { name: "My Clubs", icon: <FaUsers />, path: "/dashboard/clubs" },
-    { name: "Profile", icon: <FaUser />, path: "/dashboard/profile" },
-  ];
-
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out z-50 lg:translate-x-0`}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-accent">Clubero</h1>
-          <button
-            className="lg:hidden text-gray-600"
-            onClick={() => setSidebarOpen(false)}
+    <div className="drawer lg:drawer-open">
+      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+
+      {/* Page Content */}
+      <div className="drawer-content">
+        <nav className="navbar w-full bg-base-300">
+          <label
+            htmlFor="my-drawer-4"
+            aria-label="open sidebar"
+            className="btn btn-square btn-ghost"
           >
-            ✕
-          </button>
-        </div>
-        <nav className="p-4 flex flex-col gap-3">
-          {menuItems.map((item, idx) => (
-            <Link
-              key={idx}
-              to={item.path}
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/20 transition"
-            >
-              {item.icon}
-              <span className="font-medium">{item.name}</span>
-            </Link>
-          ))}
-          <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-100 transition text-red-600 mt-5">
-            <FaSignOutAlt />
-            Logout
-          </button>
+            <FiMenu className="text-lg" />
+          </label>
+
+          <Link
+            onClick={() => window.scrollTo(0, 0)}
+            to="/"
+            className="text-[25px] flex items-center gap-0.5 font-[Neusans-bold] text-[#ff4a79]"
+          >
+            <img className="w-9.5" src={LogoImg} alt="logo" />
+            clubero
+          </Link>
         </nav>
-      </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:ml-64">
-        {/* Top Navbar */}
-        <header className="flex items-center justify-between bg-white shadow px-6 h-16">
-          <button
-            className="lg:hidden text-gray-600"
-            onClick={() => setSidebarOpen(true)}
-          >
-            ☰
-          </button>
-          <h2 className="text-lg font-semibold">Dashboard</h2>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">Hello, User</span>
-          </div>
-        </header>
-
-        {/* Content Area */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <div className="p-4">
           <Outlet />
-        </main>
+        </div>
+      </div>
+
+      {/* Sidebar */}
+      <div className="drawer-side is-drawer-close:overflow-visible">
+        <label
+          htmlFor="my-drawer-4"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
+
+        <div className="flex min-h-full flex-col bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64 mt-2">
+          <ul className="menu w-full gap-2 grow">
+            {/* Homepage */}
+            <li>
+              <Link
+                to="/"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Homepage"
+              >
+                <FiHome className="text-lg" />
+                <span className="is-drawer-close:hidden">Homepage</span>
+              </Link>
+            </li>
+
+            {/* Overview */}
+            <li>
+              <Link
+                to="/dashboard/overview"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Overview"
+              >
+                <FiGrid className="text-lg" />
+                <span className="is-drawer-close:hidden">Overview</span>
+              </Link>
+            </li>
+
+            {/* My Clubs */}
+            <li>
+              <Link
+                to="/dashboard/my-clubs"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Clubs"
+              >
+                <FiUsers className="text-lg" />
+                <span className="is-drawer-close:hidden">My Clubs</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

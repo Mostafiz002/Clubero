@@ -11,6 +11,9 @@ import PrivateRoute from "./PrivateRoute";
 import ClubDetails from "../pages/ClubDetails";
 import PaymentSuccess from "../pages/dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/dashboard/PaymentCancelled";
+import MyClubs from "../pages/dashboard/member/MyClubs";
+import Overview from "../pages/dashboard/member/Overview";
+import EventDetails from "../pages/EventDetails";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +45,10 @@ export const router = createBrowserRouter([
         path: "events",
         Component: Events,
       },
+      {
+        path: "event-details/:id",
+        Component: EventDetails,
+      },
     ],
   },
   {
@@ -55,6 +62,8 @@ export const router = createBrowserRouter([
     children: [
       { path: "payment-success", Component: PaymentSuccess },
       { path: "payment-cancelled", Component: PaymentCancelled },
+      { path: "my-clubs", Component: MyClubs },
+      { path: "overview", element: <Overview /> },
     ],
   },
 ]);

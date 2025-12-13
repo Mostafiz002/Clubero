@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div className="flex items-center justify-center h-screen">
         <PulseLoader color="#7a66d3" margin={2} size={13} />
       </div>
     );
