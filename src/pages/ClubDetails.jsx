@@ -1,16 +1,25 @@
 import React from "react";
 import useAxios from "../hooks/useAxios";
-import { useParams } from "react-router";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { MdCategory } from "react-icons/md";
 import { FaMoneyBillWave, FaUsers } from "react-icons/fa";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const ClubDetails = () => {
   const axios = useAxios();
+  const axiosSecure = useAxiosSecure();
   const { id } = useParams();
+  const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
 
+  //single club data
   const { data: club = [] } = useQuery({
     queryKey: ["club"],
     queryFn: async () => {
@@ -19,6 +28,20 @@ const ClubDetails = () => {
     },
   });
 
+  //payment data
+  const { data: payment = null, isLoading: paymentLoading } = useQuery({
+    queryKey: ["single-payment", user?.email, club?._id],
+    enabled: !!user?.email && !!club?._id, 
+    queryFn: async () => {
+      const res = await axiosSecure(
+        `/payments/email/club?email=${user.email}&clubId=${club._id}`
+      );
+      return res.data;
+    },
+  });
+  const isJoined = !!payment;
+
+  //club manager data
   const { data: managerDetails = [] } = useQuery({
     queryKey: ["userDetails", club.managerEmail],
     queryFn: async () => {
@@ -26,7 +49,65 @@ const ClubDetails = () => {
       return res.data;
     },
   });
+  // console.log(location);
 
+  const handlePayment = () => {
+    //check login
+    if (!user) {
+      navigate("/login", { state: location.pathname });
+      return;
+    }
+
+    const paymentInfo = {
+      membershipFee: club.membershipFee,
+      clubId: club._id,
+      clubName: club.clubName,
+      email: user.email,
+    };
+
+    Swal.fire({
+      title: "Proceed to Payment?",
+      html: `
+    <p class="text-sm text-gray-700">
+      You are about to pay the membership fee for <b>${paymentInfo.clubName}</b>.
+    </p>
+    <p class="mt-1 text-accent font-semibold text-lg">
+      Fee: ${paymentInfo.membershipFee} BDT
+    </p>
+  `,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Continue",
+      cancelButtonText: "Cancel",
+      background: "#ffffff",
+      color: "#333",
+      customClass: {
+        popup: "rounded-2xl shadow-xl p-4",
+        confirmButton:
+          "bg-accent text-white px-5 py-2 rounded-lg shadow-md cursor-pointer mr-2",
+        cancelButton:
+          "bg-gray-200 text-gray-700 px-5 py-2 rounded-lg cursor-pointer",
+      },
+      buttonsStyling: false,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axiosSecure.post(
+            "/payment-checkout-session",
+            paymentInfo
+          );
+          window.location.assign(res.data.url);
+        } catch {
+          Swal.fire({
+            icon: "error",
+            title: "Payment Error",
+            text: "Something went wrong. Please try again.",
+            confirmButtonColor: "#ff4a79",
+          });
+        }
+      }
+    });
+  };
 
   return (
     <div className="max-w-[1232px] mx-auto px-4 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-5 gap-12">
@@ -90,7 +171,7 @@ const ClubDetails = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="bg-transparent p-6 rounded-2xl border border-black/10">
             <p className="text-xs font-[Neusans-medium] text-[#69696C] flex items-center gap-2">
-              <MdCategory className="text-base" />
+              <MdCategory className="text-base text-[#ff4a79]" />
               Category
             </p>
             <p className="font-[Neusans-medium]">{club.category}</p>
@@ -98,7 +179,7 @@ const ClubDetails = () => {
 
           <div className="bg-transparent p-6 rounded-2xl border border-black/10">
             <p className="text-xs font-[Neusans-medium] text-[#69696C] flex items-center gap-2">
-              <FaMoneyBillWave className="text-base" />
+              <FaMoneyBillWave className="text-base text-green-600" />
               Membership Fee
             </p>
             <p className="font-[Neusans-medium]">{club.membershipFee} BDT</p>
@@ -106,7 +187,7 @@ const ClubDetails = () => {
 
           <div className="bg-transparent p-6 rounded-2xl border border-black/10">
             <p className="text-xs font-[Neusans-medium] text-[#69696C] flex items-center gap-2">
-              <AiFillCheckCircle className="text-base" />
+              <AiFillCheckCircle className="text-base text-green-600" />
               Status
             </p>
             <p className="font-[Neusans-medium] capitalize">{club.status}</p>
@@ -114,7 +195,7 @@ const ClubDetails = () => {
 
           <div className="bg-transparent p-6 rounded-2xl border border-black/10">
             <p className="text-xs font-[Neusans-medium] text-[#69696C] flex items-center gap-2">
-              <BiCalendar className="text-base" />
+              <BiCalendar className="text-base text-accent" />
               Created At
             </p>
             <p className="font-[Neusans-medium]">
@@ -123,9 +204,27 @@ const ClubDetails = () => {
           </div>
         </div>
         {/* join btn  */}
-        <button className="button_primary px-7! flex items-center gap-2">
-          <FaUsers className="text-base" />
-          Join Club
+        <button
+          disabled={isJoined || paymentLoading}
+          onClick={handlePayment}
+          className={`button_primary px-7! flex items-center gap-2 transition-all
+    ${
+      isJoined
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "hover:-translate-y-1"
+    }
+  `}
+        >
+          {paymentLoading ? (
+            "Checking..."
+          ) : isJoined ? (
+            "Joined"
+          ) : (
+            <>
+              <FaUsers className="text-base" />
+              Join Club
+            </>
+          )}
         </button>
       </div>
 

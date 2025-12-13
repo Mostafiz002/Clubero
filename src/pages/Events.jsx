@@ -63,8 +63,7 @@ const Events = () => {
       <div className="divider mb-6"></div>
       {isLoading ? (
         <>
-          <div className="flex items-center justify-center py-20">
-            {" "}
+          <div className="flex items-center justify-center pb-24 md:pb-44 pt-24">
             <PulseLoader color="#7a66d3" margin={2} size={13} />
           </div>
         </>

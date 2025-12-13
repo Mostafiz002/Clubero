@@ -9,7 +9,6 @@ import musicImg from "../assets/music.webp";
 import babyImg from "../assets/child.webp";
 import { PulseLoader } from "react-spinners";
 
-
 const Clubs = () => {
   const axios = useAxios();
   const [search, setSearch] = useState("");
@@ -121,7 +120,10 @@ const Clubs = () => {
       <div className="divider mb-6"></div>
       {isLoading ? (
         <>
-         <div className="flex items-center justify-center py-20"> <PulseLoader color="#7a66d3" margin={2} size={13} /></div>
+          <div className="flex items-center justify-center pb-24 md:pb-44 pt-24">
+            {" "}
+            <PulseLoader color="#7a66d3" margin={2} size={13} />
+          </div>
         </>
       ) : filteredClubs.length === 0 ? (
         <div className="text-center py-20">

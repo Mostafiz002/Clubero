@@ -1,10 +1,13 @@
-import React from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
-import { Link } from 'react-router';
+import React from "react";
+import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router";
 
-const EventCard = ({event}) => {
-    return (
-         <Link className="relative group hover:scale-98 duration-200 block">
+const EventCard = ({ event }) => {
+  return (
+    <Link
+      onClick={() => window.scrollTo(0, 0)}
+      className="relative group hover:scale-98 duration-200 block"
+    >
       <div className="relative overflow-hidden rounded-3xl">
         <img
           className="h-40 w-full object-cover rounded-3xl group-hover:scale-105 duration-300"
@@ -23,7 +26,7 @@ const EventCard = ({event}) => {
         {event.description}
       </p>
     </Link>
-    );
+  );
 };
 
 export default EventCard;

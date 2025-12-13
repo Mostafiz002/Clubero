@@ -9,6 +9,8 @@ import Page404 from "../pages/Page404";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import ClubDetails from "../pages/ClubDetails";
+import PaymentSuccess from "../pages/dashboard/PaymentSuccess";
+import PaymentCancelled from "../pages/dashboard/PaymentCancelled";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +52,9 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     errorElement: <Page404 />,
-    children: [],
+    children: [
+      { path: "payment-success", Component: PaymentSuccess },
+      { path: "payment-cancelled", Component: PaymentCancelled },
+    ],
   },
 ]);
