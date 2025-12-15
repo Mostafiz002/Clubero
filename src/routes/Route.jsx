@@ -12,8 +12,9 @@ import ClubDetails from "../pages/ClubDetails";
 import PaymentSuccess from "../pages/dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/dashboard/PaymentCancelled";
 import MyClubs from "../pages/dashboard/member/MyClubs";
-import Overview from "../pages/dashboard/member/Overview";
+import Overview from "../pages/dashboard/Overview";
 import EventDetails from "../pages/EventDetails";
+import Profile from "../pages/dashboard/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
     children: [
       { path: "payment-success", Component: PaymentSuccess },
       { path: "payment-cancelled", Component: PaymentCancelled },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
       { path: "my-clubs", Component: MyClubs },
       { path: "overview", element: <Overview /> },
     ],

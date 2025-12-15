@@ -1,16 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxios from "../hooks/useAxios";
-import { useParams } from "react-router";
-import { MdLocationOn, MdEvent } from "react-icons/md";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { MdEvent } from "react-icons/md";
 import { FaMoneyBillWave, FaUsers } from "react-icons/fa";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
 import { PulseLoader } from "react-spinners";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const EventDetails = () => {
   const axios = useAxios();
   const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { data: event = {}, isLoading } = useQuery({
     queryKey: ["event-details", id],
@@ -19,6 +27,83 @@ const EventDetails = () => {
       return res.data;
     },
   });
+
+  const { data: eventRegister = null, isLoading: joinLoading } = useQuery({
+    queryKey: ["event-register", id, user?.email],
+    enabled: !!id && !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure(
+        `/eventRegistration/${id}?email=${user.email}`
+      );
+      return res.data;
+    },
+  });
+  const isJoined = !!eventRegister;
+
+  const handleEvent = () => {
+    //check login
+    if (!user) {
+      navigate("/login", { state: location.pathname });
+      return;
+    }
+
+    axiosSecure(
+      `/membership/club?email=${user?.email}&clubId=${event.clubId}`
+    ).then((res) => {
+      if (res.data.clubId === event.clubId) {
+        const eventInfo = {
+          clubId: event.clubId,
+          eventId: event._id,
+          email: user.email,
+        };
+
+        Swal.fire({
+          title: "Join the event?",
+          html: `
+        <p class="text-sm text-gray-700">
+          You are about to join <b>${event.title}</b> event.
+        </p>
+      `,
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Continue",
+          cancelButtonText: "Cancel",
+          background: "#ffffff",
+          color: "#333",
+          customClass: {
+            popup: "rounded-2xl shadow-xl p-4",
+            confirmButton:
+              "bg-accent text-white px-5 py-2 rounded-lg shadow-md cursor-pointer mr-2",
+            cancelButton:
+              "bg-gray-200 text-gray-700 px-5 py-2 rounded-lg cursor-pointer",
+          },
+          buttonsStyling: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            try {
+              axiosSecure.post("/eventRegistration", eventInfo);
+              navigate("/dashboard/my-clubs");
+              toast.success("Successfully joined the event");
+            } catch {
+              Swal.fire({
+                icon: "error",
+                title: "Payment Error",
+                text: "Something went wrong. Please try again.",
+                confirmButtonColor: "#ff4a79",
+              });
+            }
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "You need to join the club first",
+          text: "Something went wrong. Please try again.",
+          confirmButtonColor: "#ff4a79",
+        });
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -85,11 +170,26 @@ const EventDetails = () => {
 
         {/* join btn */}
         <button
-          className="button_primary px-7! flex items-center gap-2 hover:-translate-y-1 transition-all"
-          onClick={() => console.log("Join Event")}
+          disabled={isJoined || joinLoading}
+          onClick={handleEvent}
+          className={`button_primary px-7! flex items-center gap-2 transition-all
+    ${
+      isJoined
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+        : "hover:-translate-y-1"
+    }
+  `}
         >
-          <FaUsers className="text-base" />
-          Join Event
+          {joinLoading ? (
+            "Checking..."
+          ) : isJoined ? (
+            "Joined"
+          ) : (
+            <>
+              <FaUsers className="text-base" />
+              Join Event
+            </>
+          )}
         </button>
       </div>
 

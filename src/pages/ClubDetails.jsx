@@ -10,6 +10,7 @@ import { BiCalendar } from "react-icons/bi";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import { PulseLoader } from "react-spinners";
+import useRole from "../hooks/useRole";
 
 const ClubDetails = () => {
   const axios = useAxios();
@@ -18,6 +19,8 @@ const ClubDetails = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const role = useRole()
+  console.log(role)
 
   //single club data
   const { data: club = [], isLoading } = useQuery({
@@ -40,16 +43,6 @@ const ClubDetails = () => {
     },
   });
   const isJoined = !!payment;
-
-  //club manager data
-  const { data: managerDetails = [] } = useQuery({
-    queryKey: ["userDetails", club.managerEmail],
-    queryFn: async () => {
-      const res = await axios(`/users/email?email=${club.managerEmail}`);
-      return res.data;
-    },
-  });
-  // console.log(location);
 
   const handlePayment = () => {
     //check login
@@ -100,7 +93,7 @@ const ClubDetails = () => {
         try {
           if (paymentInfo.membershipFee === 0) {
             axiosSecure.post("/membership", membership).then(() => {
-              navigate("/");
+              navigate("/dashboard/my-clubs");
             });
           } else {
             const res = await axiosSecure.post(
@@ -138,7 +131,7 @@ const ClubDetails = () => {
         <div className="flex items-center gap-4">
           <figure className="relative">
             <img
-              src={managerDetails?.photoURL}
+              src={club?.managerImage}
               alt="manager"
               className="w-11 h-11 rounded-full object-cover border border-black/10"
             />
@@ -172,9 +165,7 @@ const ClubDetails = () => {
           <div>
             <p className="text-lg ">
               Created by{" "}
-              <span className="font-[Neusans-medium]">
-                {managerDetails?.displayName}
-              </span>
+              <span className="font-[Neusans-medium]">{club?.managerName}</span>
             </p>
             <p className="text-xs font-[Neusans-medium] text-[#69696C]">
               Club Manager

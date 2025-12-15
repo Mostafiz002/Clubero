@@ -13,19 +13,20 @@ const Clubs = () => {
   const axios = useAxios();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
+  const [sort, setSort] = useState("");
 
   const { data: clubs = [] } = useQuery({
-    queryKey: ["all-clubs"],
+    queryKey: ["all-clubs", sort],
     queryFn: async () => {
-      const res = await axios("/clubs");
+      const res = await axios(`/clubs?sort=${sort}`);
       return res.data;
     },
   });
 
-  const { data: searchResult = clubs, isLoading } = useQuery({
-    queryKey: ["search-clubs", search],
+  const { data: searchResult = [clubs], isLoading } = useQuery({
+    queryKey: ["search-clubs", search, sort],
     queryFn: async () => {
-      const res = await axios(`/clubs?search=${search}`);
+      const res = await axios(`/clubs?search=${search}&sort=${sort}`);
       return res.data;
     },
   });
@@ -64,10 +65,24 @@ const Clubs = () => {
 
   return (
     <div className="max-w-[1232px] mx-auto px-4 pt-20 pb-30">
-      <h2 className="heading relative">Discover All Clubs</h2>
-      <div className="flex items-center justify-between  mt-6 ">
+      <div className="flex flex-col gap-5 md:flex-row justify-between items-center">
+        <h2 className="heading relative">Discover All Clubs</h2>
+        {/* sort  */}
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="select border-none shadow-none outline-none bg-accent text-white rounded-full w-fit pl-5"
+        >
+          <option value="">Sort</option>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="fee_low">Fee: Low to High</option>
+          <option value="fee_high">Fee: High to Low</option>
+        </select>
+      </div>
+      <div className="flex flex-col gap-5 md:flex-row items-center justify-between  mt-6 ">
         {/* category  */}
-        <div className="flex flex-wrap gap-16 ">
+        <div className="flex flex-wrap gap-3 md:gap-16 ">
           {categories.map((cat) => (
             <div
               key={cat.category}
@@ -90,7 +105,7 @@ const Clubs = () => {
           ))}
         </div>
         {/* search  */}
-        <form className="input bg-transparent outline-none hover:border-black/40 focus:border-black/40">
+        <form className="input rounded-full bg-transparent outline-none hover:border-black/40 focus:border-black/40">
           <svg
             className="h-[1em] opacity-50"
             xmlns="http://www.w3.org/2000/svg"
