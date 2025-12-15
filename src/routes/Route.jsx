@@ -11,7 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import ClubDetails from "../pages/ClubDetails";
 import PaymentSuccess from "../pages/dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/dashboard/PaymentCancelled";
-import MyClubs from "../pages/dashboard/member/MyClubs";
+import MyClubs from "../pages/dashboard/MyClubs";
 import Overview from "../pages/dashboard/Overview";
 import EventDetails from "../pages/EventDetails";
 import Profile from "../pages/dashboard/Profile";

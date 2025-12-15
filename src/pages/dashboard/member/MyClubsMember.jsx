@@ -1,36 +1,28 @@
-import React from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { PulseLoader } from "react-spinners";
-import EventCard from "../../../components/shared/EventCard";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router";
 
-const MemberOverview = () => {
-  const axiosSecure = useAxiosSecure();
+const MyClubsMember = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
-  const { data: overview = {}, isLoading: overviewLoading } = useQuery({
-    queryKey: ["member-overview"],
-    queryFn: async () => {
-      const res = await axiosSecure("/dashboard/overview");
-      return res.data;
-    },
-  });
-
-  const { data: events = [], isLoading: eventsLoading } = useQuery({
+  const { data: clubs = [], isLoading } = useQuery({
     queryKey: ["upcoming-dashboard-events", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/dashboard/upcoming-events?email=${user.email}`
+        `/dashboard/myClubs?email=${user.email}`
       );
       return res.data;
     },
   });
 
-  //   console.log(events)
+  console.log(clubs);
 
-  if (overviewLoading || eventsLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <PulseLoader color="#7a66d3" margin={2} size={13} />
@@ -39,10 +31,10 @@ const MemberOverview = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div>
       <h2 className="heading relative">
-        Welcome to <span className="text-accent">Clubero</span>
-        <span className="inline-block absolute -top-3 left-74">
+        My <span className="text-accent">clubs</span>
+        <span className="inline-block absolute -top-3 left-32">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -69,34 +61,64 @@ const MemberOverview = () => {
           </svg>
         </span>
       </h2>
-
-      {/* Stats */}
-      <div className="flex gap-8">
-        <div className="p-4 bg-accent rounded-lg">
-          <p className="text-sm text-white">Total Clubs Joined</p>
-          <p className="text-xl text-white font-semibold">
-            {overview.totalClubs || 0}
+      <div className="mt-10">
+        {clubs.length === 0 ? (
+          <p className="text-gray-500 text-center">
+            You have not joined any clubs yet.
           </p>
-        </div>
-
-        <div className="p-4 bg-accent rounded-lg">
-          <p className="text-sm text-white">Total Events Registered</p>
-          <p className="text-xl text-white font-semibold">
-            {overview.totalEvents || 0}
-          </p>
-        </div>
-      </div>
-
-      {/* Upcoming Events */}
-      <div>
-        <h3 className="text-xl font-bold mb-4">Upcoming Events</h3>
-
-        {events.length === 0 ? (
-          <p className="text-gray-500">No upcoming events</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {events.map((event) => (
-              <EventCard key={event._id} event={event} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {clubs.map((club) => (
+              <Link
+                onClick={() => window.scrollTo(0, 0)}
+                to={`/club-details/${club._id}`}
+                key={club._id}
+                className="bg-linear-to-br from-accent/15 to-accent/10 border border-black/10 rounded-xl hover:shadow-lg transition-all duration-300 p-5 relative overflow-hidden"
+              >
+                {/* Status Badge */}
+                <span
+                  className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full
+              ${
+                club.status === "active"
+                  ? "bg-green-100 text-green-600"
+                  : "bg-red-100 text-red-600"
+              }`}
+                >
+                  {club.status}
+                </span>
+
+                {/* Club Name */}
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {club.clubName}
+                </h3>
+
+                {/* Location */}
+                <p className="text-sm text-gray-500 mb-3">
+                  📍 {club.location || "Location not specified"}
+                </p>
+
+                {/* Divider */}
+                <div className="border-t my-3"></div>
+
+                {/* Membership Info */}
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p>
+                    <span className="font-medium text-gray-700">
+                      Membership Status:{" "}
+                    </span>
+                    Active
+                  </p>
+
+                  <p>
+                    <span className="font-medium text-gray-700">
+                      Expiry Date:
+                    </span>{" "}
+                    {club.expiryDate
+                      ? new Date(club.expiryDate).toLocaleDateString()
+                      : "Lifetime"}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         )}
@@ -105,4 +127,4 @@ const MemberOverview = () => {
   );
 };
 
-export default MemberOverview;
+export default MyClubsMember;
