@@ -7,6 +7,7 @@ import {
   FiUsers,
   FiUser,
   FiLogOut,
+  FiCalendar,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
@@ -110,6 +111,18 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">My Clubs</span>
               </Link>
             </li>
+            {/* my events */}
+            <li>
+              <Link
+                to="/dashboard/my-events"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Events"
+              >
+                <FiCalendar  className="text-lg" />
+                <span className="is-drawer-close:hidden">My Events</span>
+              </Link>
+            </li>
+            {/* profile */}
             <li>
               <Link
                 to="/dashboard/profile"

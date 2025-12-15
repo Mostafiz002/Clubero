@@ -1,26 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
-import { PulseLoader } from "react-spinners";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import EventCardV2 from "../../../components/shared/EventCardV2";
+import { PulseLoader } from "react-spinners";
 
-const MyClubsMember = () => {
+const MyEvents = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: clubs = [], isLoading } = useQuery({
+  const { data: events = [], isLoading } = useQuery({
     queryKey: ["my-clubs-member", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/dashboard/myClubs?email=${user.email}`
+        `/dashboard/myEvents?email=${user.email}`
       );
       return res.data;
     },
   });
 
-//   console.log(clubs);
+  //   console.log(events);
+
+ 
 
   if (isLoading) {
     return (
@@ -33,8 +35,8 @@ const MyClubsMember = () => {
   return (
     <div>
       <h2 className="heading relative">
-        My <span className="text-accent">clubs</span>
-        <span className="inline-block absolute -top-3 left-32">
+        My <span className="text-accent">events</span>
+        <span className="inline-block absolute -top-3 left-36">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -61,70 +63,13 @@ const MyClubsMember = () => {
           </svg>
         </span>
       </h2>
-      <div className="mt-10">
-        {clubs.length === 0 ? (
-          <p className="text-gray-500 text-center">
-            You have not joined any clubs yet.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clubs.map((club) => (
-              <Link
-                onClick={() => window.scrollTo(0, 0)}
-                to={`/club-details/${club._id}`}
-                key={club._id}
-                className="bg-linear-to-br from-accent/15 to-accent/10 border border-black/10 rounded-xl hover:shadow-lg transition-all duration-300 p-5 relative overflow-hidden"
-              >
-                {/* Status Badge */}
-                <span
-                  className={`absolute top-4 right-4 px-3 py-1 text-xs font-medium rounded-full
-              ${
-                club.status === "active"
-                  ? "bg-green-100 text-green-600"
-                  : "bg-red-100 text-red-600"
-              }`}
-                >
-                  {club.status}
-                </span>
-
-                {/* Club Name */}
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {club.clubName}
-                </h3>
-
-                {/* Location */}
-                <p className="text-sm text-gray-500 mb-3">
-                  📍 {club.location || "Location not specified"}
-                </p>
-
-                {/* Divider */}
-                <div className="border-t my-3"></div>
-
-                {/* Membership Info */}
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p>
-                    <span className="font-medium text-gray-700">
-                      Membership Status:{" "}
-                    </span>
-                    Active
-                  </p>
-
-                  <p>
-                    <span className="font-medium text-gray-700">
-                      Expiry Date:
-                    </span>{" "}
-                    {club.expiryDate
-                      ? new Date(club.expiryDate).toLocaleDateString()
-                      : "Lifetime"}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+      <div className="grid mt-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {events.map((event) => (
+          <EventCardV2 event={event} key={event._id} />
+        ))}
       </div>
     </div>
   );
 };
 
-export default MyClubsMember;
+export default MyEvents;

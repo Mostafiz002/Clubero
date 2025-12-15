@@ -15,6 +15,7 @@ import MyClubs from "../pages/dashboard/MyClubs";
 import Overview from "../pages/dashboard/Overview";
 import EventDetails from "../pages/EventDetails";
 import Profile from "../pages/dashboard/Profile";
+import MyEvents from "../pages/dashboard/member/MyEvents";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       { path: "my-clubs", Component: MyClubs },
+      { path: "my-events", Component: MyEvents },
       { path: "overview", element: <Overview /> },
     ],
   },

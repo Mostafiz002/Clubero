@@ -40,6 +40,14 @@ const EventDetails = () => {
   });
   const isJoined = !!eventRegister;
 
+  const { data: club = [] } = useQuery({
+    queryKey: ["club"],
+    queryFn: async () => {
+      const res = await axios(`/clubs/${event.clubId}`);
+      return res.data;
+    },
+  });
+
   const handleEvent = () => {
     //check login
     if (!user) {
@@ -116,8 +124,13 @@ const EventDetails = () => {
   return (
     <div className="max-w-[1232px] mx-auto px-4 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-5 gap-12">
       {/* left section */}
+
       <div className="lg:col-span-3 space-y-8">
         <h2 className="heading md:text-[44px]!">{event.title}</h2>
+        <div className="flex gap-2 items-center justify-start">
+          <h3 className="text-xl font-[Neusans-medium] ">Club : </h3>
+          <p className="text-info leading-relaxed">{club.clubName}</p>
+        </div>
 
         {/* Description */}
         <div>
