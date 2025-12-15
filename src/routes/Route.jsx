@@ -11,11 +11,12 @@ import PrivateRoute from "./PrivateRoute";
 import ClubDetails from "../pages/ClubDetails";
 import PaymentSuccess from "../pages/dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/dashboard/PaymentCancelled";
-import MyClubs from "../pages/dashboard/MyClubs";
 import Overview from "../pages/dashboard/Overview";
 import EventDetails from "../pages/EventDetails";
 import Profile from "../pages/dashboard/Profile";
 import MyEvents from "../pages/dashboard/member/MyEvents";
+import PaymentHistory from "../pages/dashboard/PaymentHistory";
+import MyClubs from "../pages/dashboard/member/MyClubs";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,7 @@ export const router = createBrowserRouter([
       },
       { path: "my-clubs", Component: MyClubs },
       { path: "my-events", Component: MyEvents },
+      { path: "payment-history", Component: PaymentHistory },
       { path: "overview", element: <Overview /> },
     ],
   },

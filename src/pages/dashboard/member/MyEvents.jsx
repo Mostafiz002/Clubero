@@ -10,7 +10,7 @@ const MyEvents = () => {
   const axiosSecure = useAxiosSecure();
 
   const { data: events = [], isLoading } = useQuery({
-    queryKey: ["my-clubs-member", user?.email],
+    queryKey: ["my-events-member", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -21,8 +21,6 @@ const MyEvents = () => {
   });
 
   //   console.log(events);
-
- 
 
   if (isLoading) {
     return (

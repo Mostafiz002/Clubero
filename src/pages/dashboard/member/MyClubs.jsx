@@ -5,7 +5,7 @@ import { PulseLoader } from "react-spinners";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Link } from "react-router";
 
-const MyClubsMember = () => {
+const MyClubs = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
@@ -127,4 +127,4 @@ const MyClubsMember = () => {
   );
 };
 
-export default MyClubsMember;
+export default MyClubs;

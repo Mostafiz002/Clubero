@@ -8,6 +8,8 @@ import {
   FiUser,
   FiLogOut,
   FiCalendar,
+  FiCreditCard,
+  FiDollarSign,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
@@ -118,8 +120,19 @@ const DashboardLayout = () => {
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="My Events"
               >
-                <FiCalendar  className="text-lg" />
+                <FiCalendar className="text-lg" />
                 <span className="is-drawer-close:hidden">My Events</span>
+              </Link>
+            </li>
+            {/* payment history */}
+            <li>
+              <Link
+                to="/dashboard/payment-history"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Payment History"
+              >
+                <FiDollarSign className="text-lg" />
+                <span className="is-drawer-close:hidden">Payment History</span>
               </Link>
             </li>
             {/* profile */}
