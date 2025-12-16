@@ -8,15 +8,17 @@ import {
   FiUser,
   FiLogOut,
   FiCalendar,
-  FiCreditCard,
   FiDollarSign,
 } from "react-icons/fi";
+import { LiaUsersCogSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
+  const { role } = useRole();
 
   const handleLogout = () => {
     Swal.fire({
@@ -113,6 +115,20 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">My Clubs</span>
               </Link>
             </li>
+            {/* manage clubs */}
+            {(role === "admin" || role === "club-manager") && (
+              <li>
+                <Link
+                  to="/dashboard/manage-clubs"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Manage Clubs"
+                >
+                  <LiaUsersCogSolid className="text-[20px]" />
+                  <span className="is-drawer-close:hidden">Manage Clubs</span>
+                </Link>
+              </li>
+            )}
+
             {/* my events */}
             <li>
               <Link
