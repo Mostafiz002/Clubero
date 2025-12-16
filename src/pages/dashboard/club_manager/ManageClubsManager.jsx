@@ -23,7 +23,11 @@ const ManageClubsManager = () => {
     formState: { errors },
   } = useForm();
 
-  const { data: clubs = [], isLoading } = useQuery({
+  const {
+    data: clubs = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-clubs-manager", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/manager/clubs?email=${user.email}`);
@@ -52,7 +56,8 @@ const ManageClubsManager = () => {
             text: "Please wait for an admin to approve.",
             icon: "success",
           });
-          reset, setIsOpen(false);
+          reset();
+          setIsOpen(false);
         }
       })
       .catch(() => {
@@ -109,7 +114,7 @@ const ManageClubsManager = () => {
       </div>
       <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-3 lg:grid-cols-5">
         {clubs.map((club, index) => (
-          <ManageCardManager club={club} index={index} key={club._id} />
+          <ManageCardManager refetch={refetch} club={club} index={index} key={club._id} />
         ))}
       </div>
       {/*  Modal */}
