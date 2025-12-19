@@ -29,10 +29,9 @@ const ClubMember = () => {
     axiosSecure
       .patch(`/club-member/status/${id}`)
       .then((res) => {
-        console.log(res.data);
         if (res.data.modifiedCount) {
           refetch();
-          toast.success("member status is expired");
+          toast.success("Member status is expired");
         }
       })
       .catch(() => {
@@ -49,88 +48,81 @@ const ClubMember = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <h2 className="heading mb-8 relative">
         Club <span className="text-accent">Members</span> List
       </h2>
+
       {clubs.length === 0 ? (
-        <div className="alert bg-info text-accent-content shadow-lg mt-8 border-l-4 border-accent">
+        <div className="alert bg-info/10 text-primary shadow-lg mt-8 border-l-4 border-accent">
           <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="stroke-accent shrink-0 w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
             <span className="font-[Neusans-medium]">
               You are not currently managing any approved clubs.
             </span>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6">
           {clubs.map((club, index) => (
             <div
               key={club._id}
-              className="collapse collapse-arrow shadow-xl border border-info/50 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl"
+              className="collapse collapse-arrow shadow-xl border border-info/30 rounded-lg overflow-hidden"
             >
               <input
                 type="radio"
                 name="club-member-accordion"
                 defaultChecked={index === 0}
               />
-              <div className="collapse-title text-xl font-[Neusans-medium] flex justify-between items-center bg-primary text-base-100 hover:bg-info">
+
+              <div className="collapse-title text-black font-[Neusans-medium] flex justify-between items-center bg-white/10  hover:bg-info">
                 <span className="truncate">{club.clubName}</span>
                 <span className="badge badge-lg bg-accent text-accent-content border-accent">
                   {club.members.length} Members
                 </span>
               </div>
 
-              <div className="collapse-content bg-secondary p-4 text-base-100">
+              <div className="collapse-content bg-base-100 p-4">
                 {club.members.length === 0 ? (
-                  <div className="text-center p-4 bg-info/70 text-accent-content rounded-lg font-[Neusans-medium]">
+                  <div className="text-center p-4 bg-info/10 text-primary rounded-lg font-[Neusans-medium]">
                     No members have joined this club yet.
                   </div>
                 ) : (
-                  <div className="overflow-x-auto ">
-                    <table className="table table-sm w-full bg-secondary/80 text-base-100">
-                      <thead className="text-accent border-b border-info/70">
+                  <div className="overflow-x-auto">
+                    <table className="table table-sm w-full bg-base-100 text-base-content border border-info/30 rounded-lg">
+                      <thead className="bg-info/10 text-primary border-b border-info/30">
                         <tr>
-                          <th className="font-[Neusans-medium]">#</th>
-                          <th className="font-[Neusans-medium]">Email</th>
-                          <th className="font-[Neusans-medium]">Status</th>
-                          <th className="font-[Neusans-medium]">Joined At</th>
-                          <th className="font-[Neusans-medium]">
-                            Make Expired
-                          </th>
+                          <th>#</th>
+                          <th>Email</th>
+                          <th>Status</th>
+                          <th>Joined At</th>
+                          <th>Make Expired</th>
                         </tr>
                       </thead>
-                      {/* Table Body */}
-                      <tbody className="text-accent-content">
+
+                      <tbody className="text-base-content">
                         {club.members.map((member, memberIndex) => (
-                          <tr key={member._id}>
-                            <th className="opacity-70">{memberIndex + 1}</th>
-                            <td className="font-[Neusans-regular]">
-                              {member.email}
-                            </td>
+                          <tr
+                            key={member._id}
+                            className="hover:bg-info/10 transition-colors"
+                          >
+                            <th className="opacity-70">
+                              {memberIndex + 1}
+                            </th>
+
+                            <td>{member.email}</td>
+
                             <td>
                               <span
                                 className={`badge badge-sm font-[Neusans-medium] capitalize ${
                                   member.status === "active"
-                                    ? "bg-green-600 text-white border-green-600"
-                                    : "bg-yellow-600 text-white border-yellow-600"
+                                    ? "bg-green-100 text-green-700 border-green-300"
+                                    : "bg-yellow-100 text-yellow-700 border-yellow-300"
                                 }`}
                               >
                                 {member.status}
                               </span>
                             </td>
+
                             <td>
                               {member.joinedAt
                                 ? format(
@@ -139,16 +131,17 @@ const ClubMember = () => {
                                   )
                                 : "N/A"}
                             </td>
+
                             <td>
                               {member.status === "active" ? (
                                 <button
                                   onClick={() => handleStatus(member._id)}
-                                  className="text-white rounded-full cursor-pointer p-2 bg-green-500"
+                                  className="p-2 rounded-full bg-green-500 hover:bg-green-600 text-white cursor-pointer"
                                 >
                                   <FaRegEdit />
                                 </button>
                               ) : (
-                                <button className="text-white rounded-full p-2 cursor-pointer bg-red-500">
+                                <button className="p-2 rounded-full bg-red-500 opacity-70 cursor-not-allowed text-white">
                                   <MdOutlineBlock />
                                 </button>
                               )}
