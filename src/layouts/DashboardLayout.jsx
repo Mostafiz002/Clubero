@@ -9,12 +9,15 @@ import {
   FiLogOut,
   FiCalendar,
   FiDollarSign,
+  FiFileText,
 } from "react-icons/fi";
 import { LiaUsersCogSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import useRole from "../hooks/useRole";
+import { PiUsersThree } from "react-icons/pi";
+import { MdOutlineEventRepeat } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
@@ -129,6 +132,20 @@ const DashboardLayout = () => {
               </li>
             )}
 
+            {/* club member */}
+            {role === "club-manager" && (
+              <li>
+                <Link
+                  to="/dashboard/club-member"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Club Member"
+                >
+                  <PiUsersThree className="text-[21px]" />
+                  <span className="is-drawer-close:hidden">Club Member</span>
+                </Link>
+              </li>
+            )}
+
             {/* my events */}
             <li>
               <Link
@@ -140,6 +157,20 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">My Events</span>
               </Link>
             </li>
+            
+            {/* event management */}
+            {role === "club-manager" && (
+              <li>
+                <Link
+                  to="/dashboard/event-management"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Event Management"
+                >
+                  <MdOutlineEventRepeat  className="text-[21px]" />
+                  <span className="is-drawer-close:hidden">Event Management</span>
+                </Link>
+              </li>
+            )}
             {/* payment history */}
             <li>
               <Link
