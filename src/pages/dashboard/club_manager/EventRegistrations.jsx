@@ -1,27 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAuth from "../../../hooks/useAuth";
-import { PulseLoader } from "react-spinners";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Link } from "react-router";
-import MyClubCard from "../../../components/dashboard/MyClubCard";
+import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { PulseLoader } from "react-spinners";
+import { format } from "date-fns";
 
-const MyClubs = () => {
-  const { user } = useAuth();
+const EventRegistrations = () => {
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
-  const { data: clubs = [], isLoading } = useQuery({
-    queryKey: ["my-clubs-member", user?.email],
-    enabled: !!user?.email,
+  const { data: events = [], isLoading } = useQuery({
+    queryKey: ["events-registered-members", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/dashboard/myClubs?email=${user.email}`
+      const res = await axiosSecure(
+        `/manager/events/members?email=${user.email}`
       );
       return res.data;
     },
+    enabled: !!user?.email,
   });
-
-//   console.log(clubs);
 
   if (isLoading) {
     return (
@@ -31,11 +28,19 @@ const MyClubs = () => {
     );
   }
 
+  if (events.length === 0) {
+    return (
+      <div className="alert bg-info text-accent-content shadow-lg mt-8">
+        No event registrations found.
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h2 className="heading relative">
-        My <span className="text-accent">clubs</span>
-        <span className="inline-block absolute -top-3 left-32">
+         <h2 className="heading relative mb-8">
+        Event <span className="text-accent">Registrations</span>
+        <span className="inline-block absolute -top-3 left-69">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -62,19 +67,72 @@ const MyClubs = () => {
           </svg>
         </span>
       </h2>
-      <div className="mt-10">
-        {clubs.length === 0 ? (
-          <p className="text-gray-500 text-center">
-            You have not joined any clubs yet.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-            {clubs.map((club) => <MyClubCard key={club._id} club={club} />)}
+
+      <div className="space-y-6">
+        {events.map((event) => (
+          <div
+            key={event._id}
+            className="collapse collapse-arrow border border-info/40 rounded-lg shadow-lg"
+          >
+            <input type="checkbox" />
+
+            {/* Event Header */}
+            <div className="collapse-title bg-primary text-base-100 flex justify-between items-center">
+              <span className="font-[Neusans-medium] truncate">
+                {event.title}
+              </span>
+              <span className="badge bg-accent text-accent-content">
+                {event.members.length} Members
+              </span>
+            </div>
+
+            {/* Members */}
+            <div className="collapse-content bg-secondary p-4">
+              {event.members.length === 0 ? (
+                <div className="text-center bg-info/70 text-accent-content p-4 rounded-lg">
+                  No one has registered for this event yet.
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="table table-sm w-full bg-secondary text-accent-content">
+                    <thead className="border-b border-info/60 text-accent">
+                      <tr>
+                        <th>#</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Registered At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {event.members.map((member, index) => (
+                        <tr key={member._id}>
+                          <td>{index + 1}</td>
+                          <td>{member.email}</td>
+                          <td>
+                            <span className="badge bg-green-600 text-white capitalize">
+                              {member.status || "registered"}
+                            </span>
+                          </td>
+                          <td>
+                            {member.registeredAt
+                              ? format(
+                                  new Date(member.registeredAt),
+                                  "MMM d, yyyy"
+                                )
+                              : "N/A"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
 };
 
-export default MyClubs;
+export default EventRegistrations;

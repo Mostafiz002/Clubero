@@ -9,15 +9,16 @@ import {
   FiLogOut,
   FiCalendar,
   FiDollarSign,
-  FiFileText,
 } from "react-icons/fi";
+import { HiOutlineTicket } from "react-icons/hi2";
+
 import { LiaUsersCogSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import useRole from "../hooks/useRole";
 import { PiUsersThree } from "react-icons/pi";
-import { MdOutlineEventRepeat } from "react-icons/md";
+import { MdEventAvailable, MdOutlineEventRepeat } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
@@ -157,19 +158,35 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">My Events</span>
               </Link>
             </li>
-            
+
             {/* event management */}
             {role === "club-manager" && (
-              <li>
-                <Link
-                  to="/dashboard/event-management"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Event Management"
-                >
-                  <MdOutlineEventRepeat  className="text-[21px]" />
-                  <span className="is-drawer-close:hidden">Event Management</span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/event-management"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Event Management"
+                  >
+                    <MdOutlineEventRepeat className="text-[21px]" />
+                    <span className="is-drawer-close:hidden">
+                      Event Management
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/event-registrations"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Event Registrations"
+                  >
+                    <HiOutlineTicket   className="text-[21px]" />
+                    <span className="is-drawer-close:hidden">
+                      Event Registrations
+                    </span>
+                  </Link>
+                </li>
+              </>
             )}
             {/* payment history */}
             <li>

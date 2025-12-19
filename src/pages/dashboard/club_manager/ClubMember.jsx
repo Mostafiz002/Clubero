@@ -25,13 +25,13 @@ const ClubMember = () => {
     enabled: !!user?.email,
   });
 
-  const handleStatus = (id) => {
+  const handleStatus = (id, status) => {
     axiosSecure
-      .patch(`/club-member/status/${id}`)
+      .patch(`/club-member/status/${id}?status=${status}`)
       .then((res) => {
         if (res.data.modifiedCount) {
           refetch();
-          toast.success("Member status is expired");
+          toast.success(`Member status is ${status}`);
         }
       })
       .catch(() => {
@@ -95,7 +95,7 @@ const ClubMember = () => {
                           <th>Email</th>
                           <th>Status</th>
                           <th>Joined At</th>
-                          <th>Make Expired</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
 
@@ -105,9 +105,7 @@ const ClubMember = () => {
                             key={member._id}
                             className="hover:bg-info/10 transition-colors"
                           >
-                            <th className="opacity-70">
-                              {memberIndex + 1}
-                            </th>
+                            <th className="opacity-70">{memberIndex + 1}</th>
 
                             <td>{member.email}</td>
 
@@ -135,13 +133,20 @@ const ClubMember = () => {
                             <td>
                               {member.status === "active" ? (
                                 <button
-                                  onClick={() => handleStatus(member._id)}
+                                  onClick={() =>
+                                    handleStatus(member._id, "expired")
+                                  }
                                   className="p-2 rounded-full bg-green-500 hover:bg-green-600 text-white cursor-pointer"
                                 >
                                   <FaRegEdit />
                                 </button>
                               ) : (
-                                <button className="p-2 rounded-full bg-red-500 opacity-70 cursor-not-allowed text-white">
+                                <button
+                                  onClick={() =>
+                                    handleStatus(member._id, "active")
+                                  }
+                                  className="p-2 rounded-full bg-red-500 opacity-70 text-white"
+                                >
                                   <MdOutlineBlock />
                                 </button>
                               )}
