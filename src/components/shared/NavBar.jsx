@@ -129,7 +129,7 @@ const NavBar = () => {
               </label>
               {user && (
                 <div className="relative inline-block group">
-                  <div className="avatar cursor-pointer">
+                  <div className="avatar cursor-pointer  border-2 border-black/5 rounded-full">
                     <div className="min-w-9 h-9 rounded-full ">
                       <img
                         src={

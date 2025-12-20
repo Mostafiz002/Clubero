@@ -33,7 +33,7 @@ const Events = () => {
       <h2 className="heading relative">Discover All Events</h2>
       <div className="flex items-center justify-between  mt-6 ">
         {/* search  */}
-        <form className="input bg-transparent outline-none hover:border-black/40 focus:border-black/40">
+        <form className="input rounded-full bg-transparent outline-none hover:border-black/40 focus:border-black/40">
           <svg
             className="h-[1em] opacity-50"
             xmlns="http://www.w3.org/2000/svg"

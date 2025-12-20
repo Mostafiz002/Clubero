@@ -25,14 +25,13 @@ const AdminOverview = () => {
   const axiosSecure = useAxiosSecure();
 
   const { data = {}, isLoading } = useQuery({
-    queryKey: ["dashboard-stats", user?.email],
+    queryKey: ["admin-dashboard-stats", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/dashboard/stats`);
       return res.data;
     },
   });
-  console.log(data);
 
   const grouped = (data.payments || []).reduce((acc, payment) => {
     const date = format(new Date(payment.paidAt), "dd/MM/yyyy");

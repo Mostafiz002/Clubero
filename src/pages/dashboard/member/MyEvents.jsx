@@ -61,11 +61,17 @@ const MyEvents = () => {
           </svg>
         </span>
       </h2>
-      <div className="grid mt-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {events.map((event) => (
-          <EventCardV2 event={event} key={event._id} />
-        ))}
-      </div>
+      {events.length === 0 ? (
+        <p className="text-gray-500 text-center mt-10">
+          You have not joined any events yet.
+        </p>
+      ) : (
+        <div className="grid mt-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {events.map((event) => (
+            <EventCardV2 event={event} key={event._id} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

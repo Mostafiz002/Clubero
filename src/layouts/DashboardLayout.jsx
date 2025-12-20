@@ -18,7 +18,11 @@ import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import useRole from "../hooks/useRole";
 import { PiUsersThree } from "react-icons/pi";
-import { MdEventAvailable, MdOutlineEventRepeat } from "react-icons/md";
+import {
+  MdEventAvailable,
+  MdOutlineEventRepeat,
+  MdOutlineManageAccounts,
+} from "react-icons/md";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
@@ -107,6 +111,19 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Overview</span>
               </Link>
             </li>
+            {/* Manage users */}
+            {role === "admin" && (
+              <li>
+                <Link
+                  to="/dashboard/manage-users"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Manage Users"
+                >
+                  <MdOutlineManageAccounts className="text-[22px]" />
+                  <span className="is-drawer-close:hidden">Manage Users</span>
+                </Link>
+              </li>
+            )}
 
             {/* My Clubs */}
             <li>
@@ -180,7 +197,7 @@ const DashboardLayout = () => {
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Event Registrations"
                   >
-                    <HiOutlineTicket   className="text-[21px]" />
+                    <HiOutlineTicket className="text-[21px]" />
                     <span className="is-drawer-close:hidden">
                       Event Registrations
                     </span>

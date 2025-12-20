@@ -22,6 +22,8 @@ import ClubMember from "../pages/dashboard/club_manager/ClubMember";
 import ManagerRoute from "./ManagerRoute";
 import EventManagement from "../pages/dashboard/club_manager/EventManagement";
 import EventRegistrations from "../pages/dashboard/club_manager/EventRegistrations";
+import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +104,15 @@ export const router = createBrowserRouter([
           <ManagerRoute>
             <EventRegistrations />
           </ManagerRoute>
+        ),
+      },
+      //admin only route
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
         ),
       },
     ],
