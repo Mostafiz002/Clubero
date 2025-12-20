@@ -10,6 +10,8 @@ import {
   FiCalendar,
   FiDollarSign,
 } from "react-icons/fi";
+import { TbUserCog } from "react-icons/tb";
+import { RiUserSettingsLine } from "react-icons/ri";
 import { HiOutlineTicket } from "react-icons/hi2";
 
 import { LiaUsersCogSolid } from "react-icons/lia";
@@ -23,6 +25,7 @@ import {
   MdOutlineEventRepeat,
   MdOutlineManageAccounts,
 } from "react-icons/md";
+import { LuUserCog } from "react-icons/lu";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
@@ -119,7 +122,7 @@ const DashboardLayout = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Manage Users"
                 >
-                  <MdOutlineManageAccounts className="text-[22px]" />
+                  <LuUserCog    className="text-[19px]" />
                   <span className="is-drawer-close:hidden">Manage Users</span>
                 </Link>
               </li>
