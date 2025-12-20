@@ -24,6 +24,7 @@ import EventManagement from "../pages/dashboard/club_manager/EventManagement";
 import EventRegistrations from "../pages/dashboard/club_manager/EventRegistrations";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import AdminRoute from "./AdminRoute";
+import Transactions from "../pages/dashboard/admin/Transactions";
 
 export const router = createBrowserRouter([
   {
@@ -112,6 +113,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "transactions",
+        element: (
+          <AdminRoute>
+            <Transactions />
           </AdminRoute>
         ),
       },

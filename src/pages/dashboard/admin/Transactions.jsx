@@ -1,80 +1,36 @@
-import React from "react";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { PulseLoader } from "react-spinners";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 import { format } from "date-fns";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  CartesianGrid,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-} from "recharts";
 
-const AdminOverview = () => {
+const Transactions = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data = {}, isLoading } = useQuery({
-    queryKey: ["admin-dashboard-stats", user?.email],
+  const { data: transactions = [], isLoading } = useQuery({
+    queryKey: ["admin-dashboard-transactions", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/dashboard/stats`);
+      const res = await axiosSecure.get("/admin/payments");
       return res.data;
     },
   });
 
-  const grouped = (data.payments || []).reduce((acc, payment) => {
-    const date = format(new Date(payment.paidAt), "dd/MM/yyyy");
-
-    if (!acc[date]) acc[date] = 0;
-    acc[date] += payment.amount || 0;
-
-    return acc;
-  }, {});
-
-  const chartData = Object.entries(grouped).map(([date, amount]) => ({
-    date,
-    amount,
-  }));
-
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-[70vh]">
         <PulseLoader color="#7a66d3" margin={2} size={13} />
       </div>
     );
   }
 
-  // Data for general stats bar chart
-  const chartDataGeneral = [
-    { name: "Clubs", value: data.totalClubs },
-    { name: "Events", value: data.totalEvents },
-    { name: "Memberships", value: data.totalMemberships },
-  ];
-
-  // Data for payments pie chart
-  const chartDataPayments = [
-    { name: "Payments", value: data.totalPayments },
-    { name: "Remaining", value: 0 },
-  ];
-
-  const COLORS = ["#ff4a79", "#e0e0e0"];
-
   return (
-    <div className="space-y-10">
+    <div className="space-y-6">
       <h2 className="heading relative mt-6">
-        Admin <span className="text-accent">Overview</span>
-        <span className="inline-block absolute -top-3 left-59">
+        All <span className="text-accent">Transactions</span>
+        <span className="inline-block absolute -top-3 left-56">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="40"
@@ -101,75 +57,60 @@ const AdminOverview = () => {
           </svg>
         </span>
       </h2>
+         <p className="text-sm text-gray-500 -mt-4">
+          View transaction details of the whole website
+        </p>
+      <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
+        <table className="table">
+          <thead className="bg-base-200">
+            <tr>
+              <th>#</th>
+              <th>User Email</th>
+              <th>Club</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Date</th>
+            </tr>
+          </thead>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div>
-          <h3 className="text-xl font-semibold mb-2">General Stats</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              data={chartDataGeneral}
-              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#7a66d3" barSize={50} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          <tbody>
+            {transactions.length === 0 && (
+              <tr>
+                <td colSpan="6" className="text-center py-6">
+                  No transactions found
+                </td>
+              </tr>
+            )}
 
-        {/* Payments */}
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Total Payments</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={chartDataPayments}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#ff4a79"
-                label={(entry) => `৳${entry.value}`}
-              >
-                {chartDataPayments.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => `৳${value}`} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Payments over Time</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart
-              data={chartData}
-              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip formatter={(value) => `৳${value}`} />
-              <Line
-                type="monotone"
-                dataKey="amount"
-                stroke="#ff4a79"
-                strokeWidth={3}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+            {transactions.map((tx, index) => (
+              <tr key={tx._id}>
+                <td>{index + 1}</td>
+
+                <td className="font-medium">{tx.customerEmail}</td>
+
+                <td>{tx.clubName}</td>
+
+                {/* Type */}
+                <td>
+                  <span className="badge badge-info badge-outline">
+                    Membership
+                  </span>
+                </td>
+
+                {/* Amount */}
+                <td className="font-semibold text-green-600">৳ {tx.amount}</td>
+                <td>
+                  {tx.paidAt
+                    ? format(new Date(tx.paidAt), "dd MMM yyyy, hh:mm a")
+                    : "N/A"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default AdminOverview;
+export default Transactions;

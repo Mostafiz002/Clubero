@@ -32,7 +32,7 @@ const MyEvents = () => {
 
   return (
     <div>
-      <h2 className="heading relative">
+      <h2 className="heading relative mt-6">
         My <span className="text-accent">events</span>
         <span className="inline-block absolute -top-3 left-36">
           <svg

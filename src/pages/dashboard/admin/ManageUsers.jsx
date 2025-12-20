@@ -171,33 +171,35 @@ const ManageUsers = () => {
                 <td>{new Date(u.createdAt).toLocaleDateString()}</td>
 
                 {/* Actions */}
-                <td className="flex gap-2 justify-center">
-                  {u.role !== "admin" && (
-                    <button
-                      onClick={() => handleRoleChange(u._id, "admin")}
-                      className="btn btn-xs btn-error"
-                    >
-                      Make Admin
-                    </button>
-                  )}
+                <td className="text-center align-middle">
+                  <div className="flex gap-2 justify-center items-center">
+                    {u.role !== "admin" && (
+                      <button
+                        onClick={() => handleRoleChange(u._id, "admin")}
+                        className="btn btn-xs btn-error"
+                      >
+                        Make Admin
+                      </button>
+                    )}
 
-                  {u.role !== "club-manager" && (
-                    <button
-                      onClick={() => handleRoleChange(u._id, "club-manager")}
-                      className="btn btn-xs btn-warning"
-                    >
-                      Make Manager
-                    </button>
-                  )}
+                    {u.role !== "club-manager" && (
+                      <button
+                        onClick={() => handleRoleChange(u._id, "club-manager")}
+                        className="btn btn-xs btn-warning"
+                      >
+                        Make Manager
+                      </button>
+                    )}
 
-                  {u.role !== "member" && (
-                    <button
-                      onClick={() => handleRoleChange(u._id, "member")}
-                      className="btn btn-xs btn-outline"
-                    >
-                      Make Member
-                    </button>
-                  )}
+                    {u.role !== "member" && (
+                      <button
+                        onClick={() => handleRoleChange(u._id, "member")}
+                        className="btn btn-xs btn-outline"
+                      >
+                        Make Member
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

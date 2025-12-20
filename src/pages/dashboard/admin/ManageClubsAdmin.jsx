@@ -47,7 +47,7 @@ const ManageClubsAdmin = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="heading relative mt-8">
+      <h2 className="heading relative mt-6">
         Manage <span className="text-accent">Clubs</span>
         <span className="inline-block absolute -top-3 left-51 ">
           <svg

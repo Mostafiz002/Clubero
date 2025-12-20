@@ -33,7 +33,7 @@ const MyClubs = () => {
 
   return (
     <div>
-      <h2 className="heading relative">
+      <h2 className="heading relative mt-6">
         My <span className="text-accent">clubs</span>
         <span className="inline-block absolute -top-3 left-32">
           <svg

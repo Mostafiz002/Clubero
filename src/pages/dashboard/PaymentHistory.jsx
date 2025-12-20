@@ -28,7 +28,7 @@ const PaymentHistory = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="heading relative mt-8">
+        <h2 className="heading relative mt-6">
           Payment <span className="text-accent">History</span>
           <span className="inline-block absolute -top-3 left-59 ">
             <svg
@@ -57,7 +57,7 @@ const PaymentHistory = () => {
             </svg>
           </span>
         </h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-2">
           View all your membership payments and transaction details
         </p>
       </div>
