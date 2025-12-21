@@ -155,7 +155,7 @@ const ManageClubsManager = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
-          className="flex items-center justify-center gap-2 bg-[#10b981] hover:bg-[#059669] text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-green-200"
+          className="flex items-center justify-center gap-2 bg-[#10b981] hover:bg-[#059669] cursor-pointer text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-green-200"
         >
           <FiPlus className="text-xl" />
           <span>Create New Club</span>

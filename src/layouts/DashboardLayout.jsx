@@ -245,7 +245,7 @@ const DashboardLayout = () => {
           <div className="p-4 mt-auto">
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-500 hover:bg-red-50/50 transition-all duration-300 rounded-xl font-medium border border-transparent hover:border-red-100"
+              className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-500 hover:bg-red-50/50 transition-all duration-300 rounded-xl font-medium border border-transparent hover:border-red-100"
             >
               <FiLogOut className="text-lg" />
               <span>Logout Session</span>

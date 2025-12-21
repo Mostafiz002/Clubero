@@ -26,6 +26,7 @@ import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import AdminRoute from "./AdminRoute";
 import Transactions from "../pages/dashboard/admin/Transactions";
 import ClubCreatorProgram from "../pages/ClubCreatorProgram";
+import AboutUs from "../pages/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "event-details/:id",
         Component: EventDetails,
+      },
+      {
+        path: "about-us",
+        Component: AboutUs,
       },
       {
         path: "club-creator-program",

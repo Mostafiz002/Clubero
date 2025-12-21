@@ -58,6 +58,17 @@ const NavBar = () => {
           Events
         </NavLink>
       </li>
+       <li>
+        <NavLink
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+          to="/about-us"
+          className={navLinkClass}
+        >
+          About us
+        </NavLink>
+      </li>
       <li>
         <NavLink
           onClick={() => {
@@ -69,6 +80,7 @@ const NavBar = () => {
           Creator program
         </NavLink>
       </li>
+     
     </>
   );
 
@@ -196,7 +208,10 @@ const NavBar = () => {
             <div className="mt-6 flex flex-col gap-3">
               {user ? (
                 <>
-                  <Link to="/dashboard/overview" className="btn bg-secondary rounded-full text-base-100 hover:bg-secondary/80">
+                  <Link
+                    to="/dashboard/overview"
+                    className="btn bg-secondary rounded-full text-base-100 hover:bg-secondary/80"
+                  >
                     Dashboard
                   </Link>
                   <button className="btn  rounded-full bg-secondary text-base-100 hover:bg-secondary/80">
