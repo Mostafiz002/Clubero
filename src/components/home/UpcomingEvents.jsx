@@ -3,7 +3,7 @@ import React from "react";
 import useAxios from "../../hooks/useAxios";
 import EventCard from "../shared/EventCard";
 import { Link } from "react-router";
-// 1. Import Framer Motion
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { PulseLoader } from "react-spinners";
 
@@ -18,13 +18,12 @@ const UpcomingEvents = () => {
     },
   });
 
-  // Animation variants
   const containerVars = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15, // Slightly slower stagger for a premium feel
+        staggerChildren: 0.15,
       },
     },
   };

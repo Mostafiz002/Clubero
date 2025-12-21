@@ -155,11 +155,17 @@ const NavBar = () => {
                   {/* Dropdown */}
                   <Slide direction="down" triggerOnce={false}>
                     <div className="absolute right-0 mt-2 w-40 bg-base-200 text-base-content rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-2 space-y-2">
-                      <Link to="/dashboard/profile" className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
+                      <Link
+                        to="/dashboard/profile"
+                        className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2"
+                      >
                         <FaUser /> Profile
                       </Link>
 
-                      <Link to="/dashboard/overview" className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2">
+                      <Link
+                        to="/dashboard/overview"
+                        className="flex items-center gap-2 font-[Neusans-medium] text-sm cursor-pointer rounded-md hover:bg-base-300 transition-all duration-200 w-full py-2 px-2"
+                      >
                         <TbLayoutDashboardFilled /> Dashboard
                       </Link>
 
@@ -189,12 +195,16 @@ const NavBar = () => {
             {navLinks}
             <div className="mt-6 flex flex-col gap-3">
               {user ? (
-                <button className="btn bg-secondary text-base-100 hover:bg-secondary/80">
-                  Logout
-                </button>
+                <>
+                  <Link to="/dashboard/overview" className="btn bg-secondary rounded-full text-base-100 hover:bg-secondary/80">
+                    Dashboard
+                  </Link>
+                  <button className="btn  rounded-full bg-secondary text-base-100 hover:bg-secondary/80">
+                    Logout
+                  </button>
+                </>
               ) : (
                 <>
-                  {" "}
                   <Link
                     to="/login"
                     className="btn btn-outline border-secondary text-secondary hover:bg-secondary hover:text-base-100 rounded-full"

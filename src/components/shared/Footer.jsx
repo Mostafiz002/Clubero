@@ -51,6 +51,15 @@ const Footer = () => {
                 <Link
                   onClick={scrollTOTop}
                   className="hover:text-accent transition hover:link"
+                  to="/dashboard/overview"
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
                   to="/"
                 >
                   Home
@@ -86,9 +95,18 @@ const Footer = () => {
                 <Link
                   onClick={scrollTOTop}
                   className="hover:text-accent transition hover:link"
+                  to="/club-creator-program"
+                >
+                  Creator Program
+                </Link>
+              </li>
+               <li>
+                <Link
+                  onClick={scrollTOTop}
+                  className="hover:text-accent transition hover:link"
                   to="/clubs"
                 >
-                  Clubs
+                  Explore Clubs
                 </Link>
               </li>
               <li>
@@ -97,18 +115,10 @@ const Footer = () => {
                   className="hover:text-accent transition hover:link"
                   to="/events"
                 >
-                  Events
+                  Explore Events
                 </Link>
               </li>
-              <li>
-                <Link
-                  onClick={scrollTOTop}
-                  className="hover:text-accent transition hover:link"
-                  to="/dashboard/overview"
-                >
-                  Dashboard
-                </Link>
-              </li>
+              
             </ul>
           </div>
 

@@ -105,9 +105,10 @@ const DashboardLayout = () => {
         <aside className="min-h-full w-72 flex flex-col bg-linear-to-b from-slate-50 to-slate-100 border-r border-gray-200/60 shadow-xl shadow-slate-200/50">
           <div className="h-20 flex items-center px-8">
             <Link
-              to="/"  onClick={() => {
-              window.scrollTo(0, 0);
-            }}
+              to="/"
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
               className="flex items-center gap-3 font-bold text-2xl text-[#ff4a79] hover:opacity-80 transition-opacity"
             >
               <img className="w-9 drop-shadow-sm" src={LogoImg} alt="logo" />
@@ -123,7 +124,13 @@ const DashboardLayout = () => {
                 Main Navigation
               </p>
               <div className="space-y-1">
-                <NavLink to="/" className={navLinkClasses}>
+                <NavLink
+                  to="/"
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                  }}
+                  className={navLinkClasses}
+                >
                   <FiHome className="text-lg" />
                   <span>Homepage</span>
                 </NavLink>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PulseLoader } from "react-spinners";
 import ManageCardManager from "../../../components/dashboard/ManageCardManager";
 import { FiLayers, FiPlus } from "react-icons/fi";
@@ -18,6 +18,7 @@ const ManageClubsManager = () => {
   const { role } = useRole();
   const axiosSecure = useAxiosSecure();
   const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -37,7 +38,33 @@ const ManageClubsManager = () => {
     },
   });
 
-  const handleCreateClub = (data) => {
+  const { mutateAsync: createClub, isPending } = useMutation({
+    mutationFn: async (newClub) => {
+      const res = await axiosSecure.post("/clubs", newClub);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-clubs-manager", user?.email],
+      });
+
+      Swal.fire({
+        title: "Club created!",
+        text: "Please wait for an admin to approve.",
+        icon: "success",
+      });
+      reset();
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message ||
+          "Error occurred while creating the club"
+      );
+    },
+  });
+
+  const handleCreateClub = async (data) => {
     if (role !== "club-manager") {
       return toast.error("Only club manager can create club");
     }
@@ -47,24 +74,9 @@ const ManageClubsManager = () => {
       managerEmail: user.email,
       managerName: user.displayName,
       managerImage: user.photoURL,
+      status: "pending",
     };
-
-    axiosSecure
-      .post("/clubs", clubInfo)
-      .then((res) => {
-        if (res.data.insertedId) {
-          Swal.fire({
-            title: "Club created!",
-            text: "Please wait for an admin to approve.",
-            icon: "success",
-          });
-          reset();
-          setIsOpen(false);
-        }
-      })
-      .catch(() => {
-        toast.error("Error occurred while creating the club");
-      });
+    await createClub(clubInfo);
   };
 
   if (isLoading) {
@@ -321,9 +333,14 @@ const ManageClubsManager = () => {
 
                 <button
                   type="submit"
-                  className="bg-green-500 cursor-pointer text-white px-4 py-2 rounded-md"
+                  disabled={isPending} 
+                  className={`bg-green-500 text-white px-4 py-2 rounded-md ${
+                    isPending
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
                 >
-                  Create Club
+                  {isPending ? "Creating..." : "Create Club"}
                 </button>
               </div>
             </form>

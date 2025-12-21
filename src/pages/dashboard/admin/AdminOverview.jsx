@@ -210,6 +210,7 @@ const AdminOverview = () => {
                 { name: "Clubs", val: data.totalClubs },
                 { name: "Events", val: data.totalEvents },
                 { name: "Members", val: data.totalMemberships },
+                { name: "Users", val: data.totalUsers },
               ]}
             >
               <XAxis
@@ -226,6 +227,7 @@ const AdminOverview = () => {
                 <Cell fill="#7a66d3" />
                 <Cell fill="#ff4a79" />
                 <Cell fill="#3b82f6" />
+                 <Cell fill="#ff4a79" />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
