@@ -58,6 +58,17 @@ const NavBar = () => {
           Events
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+          to="/club-creator-program"
+          className={navLinkClass}
+        >
+          Creator program
+        </NavLink>
+      </li>
     </>
   );
 

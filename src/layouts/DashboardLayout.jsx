@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import LogoImg from "../assets/icons8-cloud-cross-48.png";
 import {
   FiMenu,
@@ -10,21 +10,15 @@ import {
   FiCalendar,
   FiDollarSign,
 } from "react-icons/fi";
-import { MdOutlineReceiptLong } from "react-icons/md";
+import { MdOutlineReceiptLong, MdOutlineEventRepeat } from "react-icons/md";
 import { HiOutlineTicket } from "react-icons/hi2";
-
 import { LiaUsersCogSolid } from "react-icons/lia";
+import { PiUsersThree } from "react-icons/pi";
+import { LuUserCog } from "react-icons/lu";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import useRole from "../hooks/useRole";
-import { PiUsersThree } from "react-icons/pi";
-import {
-  MdEventAvailable,
-  MdOutlineEventRepeat,
-  MdOutlineManageAccounts,
-} from "react-icons/md";
-import { LuUserCog } from "react-icons/lu";
 
 const DashboardLayout = () => {
   const { setUser, logOut } = useAuth();
@@ -33,11 +27,12 @@ const DashboardLayout = () => {
   const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",
+      text: "You will be redirected to the login page.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Logout!",
+      confirmButtonColor: "#ff4a79",
+      cancelButtonColor: "#1f2937",
+      confirmButtonText: "Yes, Logout",
     }).then((result) => {
       if (result.isConfirmed) {
         logOut()
@@ -50,210 +45,201 @@ const DashboardLayout = () => {
     });
   };
 
+  const navLinkClasses = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 transition-all duration-300 rounded-xl text-sm font-medium ${
+      isActive
+        ? "bg-white text-[#ff4a79] shadow-sm border border-[#ff4a79]/10"
+        : "text-gray-500 hover:bg-white/50 hover:text-gray-900"
+    }`;
+
   return (
-    <div className="drawer lg:drawer-open min-h-screen">
+    <div className="drawer lg:drawer-open font-sans min-h-screen bg-[#f8fafc]">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
-      {/* Page Content */}
-      <div className="drawer-content">
-        <nav className="navbar w-full bg-accent-content/60">
-          <label
-            htmlFor="my-drawer-4"
-            aria-label="open sidebar"
-            className="btn btn-square btn-ghost"
-          >
-            <FiMenu className="text-lg" />
-          </label>
+      {/* Main Content Area */}
+      <div className="drawer-content flex flex-col bg-linear-to-br from-slate-50 via-white to-blue-50/30">
+        {/* Navbar */}
+        <nav className="navbar sticky top-0 z-30 w-full bg-white/60 backdrop-blur-xl border-b border-gray-100 px-6 py-3">
+          <div className="flex-none lg:hidden">
+            <label
+              htmlFor="my-drawer-4"
+              aria-label="open sidebar"
+              className="btn btn-square btn-ghost text-gray-600"
+            >
+              <FiMenu className="text-xl" />
+            </label>
+          </div>
 
-          <Link
-            onClick={() => window.scrollTo(0, 0)}
-            to="/"
-            className="text-[25px] flex items-center gap-0.5 font-[Neusans-bold] text-[#ff4a79]"
-          >
-            <img className="w-9.5" src={LogoImg} alt="logo" />
-            clubero
-          </Link>
+          <div className="flex-1 px-2 mx-2 lg:hidden">
+            <Link
+              to="/"
+              className="flex items-center gap-2 font-bold text-xl text-[#ff4a79]"
+            >
+              <img className="w-8" src={LogoImg} alt="logo" />
+              clubero
+            </Link>
+          </div>
+
+          <div className="flex-1 hidden lg:block">
+            <h1 className="text-lg font-bold tracking-tight text-slate-800">
+              Workspace
+            </h1>
+          </div>
         </nav>
 
-        <div className="p-8">
-          <Outlet />
-        </div>
+        {/* Outlet Content */}
+        <main className="p-6 md:p-8 grow animate-in fade-in duration-500">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
+        </main>
       </div>
 
       {/* Sidebar */}
-      <div className="drawer-side is-drawer-close:overflow-visible">
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+      <div className="drawer-side z-40">
+        <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-        <div className="flex min-h-full flex-col bg-accent-content is-drawer-close:w-14 is-drawer-open:w-64 pt-2">
-          <ul className="menu w-full gap-2 grow">
-            {/* Homepage */}
-            <li>
-              <Link
-                to="/"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Homepage"
-              >
-                <FiHome className="text-lg" />
-                <span className="is-drawer-close:hidden">Homepage</span>
-              </Link>
-            </li>
+        <aside className="min-h-full w-72 flex flex-col bg-linear-to-b from-slate-50 to-slate-100 border-r border-gray-200/60 shadow-xl shadow-slate-200/50">
+          <div className="h-20 flex items-center px-8">
+            <Link
+              to="/"
+              className="flex items-center gap-3 font-bold text-2xl text-[#ff4a79] hover:opacity-80 transition-opacity"
+            >
+              <img className="w-9 drop-shadow-sm" src={LogoImg} alt="logo" />
+              <span className="tracking-tighter">clubero</span>
+            </Link>
+          </div>
 
-            {/* Overview */}
-            <li>
-              <Link
-                to="/dashboard/overview"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Overview"
-              >
-                <FiGrid className="text-lg" />
-                <span className="is-drawer-close:hidden">Overview</span>
-              </Link>
-            </li>
-            {/* Manage users */}
+          {/* Sidebar Menu */}
+          <div className="flex-1 overflow-y-auto py-4 px-4 space-y-6">
+            {/* Main Group */}
+            <div>
+              <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-3">
+                Main Navigation
+              </p>
+              <div className="space-y-1">
+                <NavLink to="/" className={navLinkClasses}>
+                  <FiHome className="text-lg" />
+                  <span>Homepage</span>
+                </NavLink>
+                <NavLink to="/dashboard/overview" className={navLinkClasses}>
+                  <FiGrid className="text-lg" />
+                  <span>Overview</span>
+                </NavLink>
+              </div>
+            </div>
+
+            {/* Admin Section */}
             {role === "admin" && (
-              <li>
-                <Link
-                  to="/dashboard/manage-users"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Manage Users"
-                >
-                  <LuUserCog className="text-[19px]" />
-                  <span className="is-drawer-close:hidden">Manage Users</span>
-                </Link>
-              </li>
+              <div>
+                <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-3">
+                  Administration
+                </p>
+                <div className="space-y-1">
+                  <NavLink
+                    to="/dashboard/manage-users"
+                    className={navLinkClasses}
+                  >
+                    <LuUserCog className="text-lg" />
+                    <span>Manage Users</span>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/manage-clubs"
+                    className={navLinkClasses}
+                  >
+                    <LiaUsersCogSolid className="text-lg" />
+                    <span>Manage Clubs</span>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/transactions"
+                    className={navLinkClasses}
+                  >
+                    <MdOutlineReceiptLong className="text-lg" />
+                    <span>Transactions</span>
+                  </NavLink>
+                </div>
+              </div>
             )}
 
-            {/* My Clubs */}
-            <li>
-              <Link
-                to="/dashboard/my-clubs"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Clubs"
-              >
-                <FiUsers className="text-lg" />
-                <span className="is-drawer-close:hidden">My Clubs</span>
-              </Link>
-            </li>
-            {/* manage clubs */}
-            {(role === "admin" || role === "club-manager") && (
-              <li>
-                <Link
-                  to="/dashboard/manage-clubs"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Manage Clubs"
-                >
-                  <LiaUsersCogSolid className="text-[20px]" />
-                  <span className="is-drawer-close:hidden">Manage Clubs</span>
-                </Link>
-              </li>
-            )}
-
-            {/* club member */}
+            {/* Manager Section */}
             {role === "club-manager" && (
-              <li>
-                <Link
-                  to="/dashboard/club-member"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Club Member"
-                >
-                  <PiUsersThree className="text-[21px]" />
-                  <span className="is-drawer-close:hidden">Club Member</span>
-                </Link>
-              </li>
-            )}
-
-            {/* my events */}
-            <li>
-              <Link
-                to="/dashboard/my-events"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Events"
-              >
-                <FiCalendar className="text-lg" />
-                <span className="is-drawer-close:hidden">My Events</span>
-              </Link>
-            </li>
-
-            {/* event management */}
-            {role === "club-manager" && (
-              <>
-                <li>
-                  <Link
+              <div>
+                <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-3">
+                  Management
+                </p>
+                <div className="space-y-1">
+                  <NavLink
+                    to="/dashboard/manage-clubs"
+                    className={navLinkClasses}
+                  >
+                    <LiaUsersCogSolid className="text-lg" />
+                    <span>Club Settings</span>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/club-member"
+                    className={navLinkClasses}
+                  >
+                    <PiUsersThree className="text-lg" />
+                    <span>Club Members</span>
+                  </NavLink>
+                  <NavLink
                     to="/dashboard/event-management"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Event Management"
+                    className={navLinkClasses}
                   >
-                    <MdOutlineEventRepeat className="text-[21px]" />
-                    <span className="is-drawer-close:hidden">
-                      Event Management
-                    </span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
+                    <MdOutlineEventRepeat className="text-lg" />
+                    <span>Event Management</span>
+                  </NavLink>
+                  <NavLink
                     to="/dashboard/event-registrations"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Event Registrations"
+                    className={navLinkClasses}
                   >
-                    <HiOutlineTicket className="text-[21px]" />
-                    <span className="is-drawer-close:hidden">
-                      Event Registrations
-                    </span>
-                  </Link>
-                </li>
-              </>
+                    <HiOutlineTicket className="text-lg" />
+                    <span>Event Registrations</span>
+                  </NavLink>
+                </div>
+              </div>
             )}
-            {/* payment history */}
-            <li>
-              <Link
-                to="/dashboard/payment-history"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Payment History"
-              >
-                <FiDollarSign className="text-lg" />
-                <span className="is-drawer-close:hidden">Payment History</span>
-              </Link>
-            </li>
-            {/* Transactions */}
-            {role === "admin" && (
-              <li>
-                <Link
-                  to="/dashboard/transactions"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Transactions"
+
+            {/* Personal Group */}
+            <div>
+              <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-3">
+                Account
+              </p>
+              <div className="space-y-1">
+                <NavLink to="/dashboard/my-clubs" className={navLinkClasses}>
+                  <FiUsers className="text-lg" />
+                  <span>My Clubs</span>
+                </NavLink>
+                <NavLink to="/dashboard/my-events" className={navLinkClasses}>
+                  <FiCalendar className="text-lg" />
+                  <span>My Events</span>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/payment-history"
+                  className={navLinkClasses}
                 >
-                  <MdOutlineReceiptLong  className="text-[21px]" />
-                  <span className="is-drawer-close:hidden">Transactions</span>
-                </Link>
-              </li>
-            )}
-            {/* profile */}
-            <li>
-              <Link
-                to="/dashboard/profile"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Profile"
-              >
-                <FiUser className="text-lg" />
-                <span className="is-drawer-close:hidden">Profile</span>
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Logout"
-              >
-                <FiLogOut className="text-lg" />
-                <span className="is-drawer-close:hidden">Logout</span>
-              </button>
-            </li>
-          </ul>
-        </div>
+                  <FiDollarSign className="text-lg" />
+                  <span>Payment History</span>
+                </NavLink>
+                <NavLink to="/dashboard/profile" className={navLinkClasses}>
+                  <FiUser className="text-lg" />
+                  <span>Profile</span>
+                </NavLink>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 mt-auto">
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-500 hover:bg-red-50/50 transition-all duration-300 rounded-xl font-medium border border-transparent hover:border-red-100"
+            >
+              <FiLogOut className="text-lg" />
+              <span>Logout Session</span>
+            </button>
+          </div>
+        </aside>
       </div>
     </div>
   );

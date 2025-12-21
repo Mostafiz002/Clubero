@@ -7,6 +7,7 @@ import pcImg from "../assets/computer.webp";
 import catImg from "../assets/cat.webp";
 import musicImg from "../assets/music.webp";
 import babyImg from "../assets/child.webp";
+import starImg from "../assets/sparkle.webp";
 import { PulseLoader } from "react-spinners";
 
 const Clubs = () => {
@@ -83,6 +84,22 @@ const Clubs = () => {
       <div className="flex flex-col gap-5 md:flex-row items-center justify-between  mt-6 ">
         {/* category  */}
         <div className="flex flex-wrap gap-3 md:gap-16 ">
+          <button
+            onClick={resetFilters}
+            className={`group cursor-pointer transition-all duration-300 flex flex-col items-center 
+      justify-center `}
+          >
+            <img
+              className="w-8 duration-200 group-hover:-translate-y-1"
+              src={starImg}
+              alt="icon"
+            />
+            <p
+              className={`text-[12px] font-[Neusans-medium] mt-2  text-[#69696C]`}
+            >
+              All Clubs
+            </p>
+          </button>
           {categories.map((cat) => (
             <div
               key={cat.category}

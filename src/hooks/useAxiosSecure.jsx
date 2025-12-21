@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.VITE_SITE_DOMAIN,
 });
 
 const useAxiosSecure = () => {
@@ -13,13 +13,15 @@ const useAxiosSecure = () => {
 
   useEffect(() => {
     // Request interceptor
-    const requestInterceptor = axiosInstance.interceptors.request.use((config) => {
-      const token = user?.accessToken;
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    const requestInterceptor = axiosInstance.interceptors.request.use(
+      (config) => {
+        const token = user?.accessToken;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
       }
-      return config;
-    });
+    );
 
     // Response interceptor
     const responseInterceptor = axiosInstance.interceptors.response.use(

@@ -82,7 +82,7 @@ const EventCardManager = ({ event, clubs, refetch }) => {
       <Link
         to={`/event-details/${event._id}`}
         onClick={() => window.scrollTo(0, 0)}
-        className="relative group hover:scale-98 duration-200"
+        className="relative group hover:scale-98! duration-200"
       >
         <div className="relative overflow-hidden rounded-3xl">
           <img

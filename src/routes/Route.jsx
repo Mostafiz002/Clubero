@@ -25,6 +25,7 @@ import EventRegistrations from "../pages/dashboard/club_manager/EventRegistratio
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import AdminRoute from "./AdminRoute";
 import Transactions from "../pages/dashboard/admin/Transactions";
+import ClubCreatorProgram from "../pages/ClubCreatorProgram";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,14 @@ export const router = createBrowserRouter([
       {
         path: "event-details/:id",
         Component: EventDetails,
+      },
+      {
+        path: "club-creator-program",
+        element: (
+          <PrivateRoute>
+            <ClubCreatorProgram />
+          </PrivateRoute>
+        ),
       },
     ],
   },

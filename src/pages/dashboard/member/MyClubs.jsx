@@ -3,8 +3,32 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { PulseLoader } from "react-spinners";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Link } from "react-router";
 import MyClubCard from "../../../components/dashboard/MyClubCard";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+    },
+  },
+};
 
 const MyClubs = () => {
   const { user } = useAuth();
@@ -21,8 +45,6 @@ const MyClubs = () => {
     },
   });
 
-//   console.log(clubs);
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -32,8 +54,17 @@ const MyClubs = () => {
   }
 
   return (
-    <div>
-      <h2 className="heading relative mt-6">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      className="overflow-hidden"
+    >
+      <motion.h2
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="heading relative mt-6"
+      >
         My <span className="text-accent">clubs</span>
         <span className="inline-block absolute -top-3 left-32">
           <svg
@@ -42,9 +73,7 @@ const MyClubs = () => {
             height="40"
             viewBox="0 0 32 32"
             fill="none"
-            class="injected-svg text-[#ff4a79]  __web-inspector-hide-shortcut__"
-            data-src="https://secure.meetupstatic.com/next/images/scribbles/three-exclamative-lines.svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
+            className="injected-svg text-[#ff4a79]"
           >
             <title>threeExclamativeLines scribble</title>
             <path
@@ -61,19 +90,31 @@ const MyClubs = () => {
             ></path>
           </svg>
         </span>
-      </h2>
+      </motion.h2>
+
       <div className="mt-10">
         {clubs.length === 0 ? (
-          <p className="text-gray-500 text-center">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-gray-500 text-center"
+          >
             You have not joined any clubs yet.
-          </p>
+          </motion.p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-            {clubs.map((club) => <MyClubCard key={club._id} club={club} />)}
-          </div>
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6"
+          >
+            {clubs.map((club) => (
+              <motion.div key={club._id} variants={itemVariants}>
+                <MyClubCard club={club} />
+              </motion.div>
+            ))}
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
