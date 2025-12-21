@@ -18,13 +18,31 @@ const Banner = () => {
     }),
   };
 
+  const sideImageRight = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 1.2, ease: "easeOut" },
+    },
+  };
+
+  const sideImageLeft = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 1.2, ease: "easeOut" },
+    },
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 max-w-[1400px] mx-auto pt-0 lg:pt-17 pb-20 lg:pb-8 px-4 min-h-[80.5vh]">
       <motion.img
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="hidden lg:flex w-77 "
+        variants={sideImageLeft}
+        initial="hidden"
+        animate="visible"
+        className="hidden lg:flex w-77 object-contain"
         src={leftBannerImg}
         alt="Left Banner"
       />
@@ -93,16 +111,22 @@ const Banner = () => {
           Events are happening every day—sign up to join the fun.
         </motion.p>
         <motion.div variants={textVariant} custom={3}>
-          <Link to="/clubs" className="button_primary hover:-translate-y-1 ">
+          <Link
+            to="/clubs"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+            className="button_primary hover:-translate-y-1 "
+          >
             Join Clubs
           </Link>
         </motion.div>
       </motion.div>
       <motion.img
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="hidden lg:flex w-77"
+        variants={sideImageRight}
+        initial="hidden"
+        animate="visible"
+        className="hidden lg:flex w-77 object-contain"
         src={rightBannerImg}
         alt="Right Banner"
       />

@@ -73,6 +73,9 @@ const DashboardLayout = () => {
           <div className="flex-1 px-2 mx-2 lg:hidden">
             <Link
               to="/"
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
               className="flex items-center gap-2 font-bold text-xl text-[#ff4a79]"
             >
               <img className="w-8" src={LogoImg} alt="logo" />
@@ -102,7 +105,9 @@ const DashboardLayout = () => {
         <aside className="min-h-full w-72 flex flex-col bg-linear-to-b from-slate-50 to-slate-100 border-r border-gray-200/60 shadow-xl shadow-slate-200/50">
           <div className="h-20 flex items-center px-8">
             <Link
-              to="/"
+              to="/"  onClick={() => {
+              window.scrollTo(0, 0);
+            }}
               className="flex items-center gap-3 font-bold text-2xl text-[#ff4a79] hover:opacity-80 transition-opacity"
             >
               <img className="w-9 drop-shadow-sm" src={LogoImg} alt="logo" />

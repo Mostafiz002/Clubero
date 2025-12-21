@@ -9,6 +9,8 @@ import musicImg from "../assets/music.webp";
 import babyImg from "../assets/child.webp";
 import starImg from "../assets/sparkle.webp";
 import { PulseLoader } from "react-spinners";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 
 const Clubs = () => {
   const axios = useAxios();
@@ -42,33 +44,27 @@ const Clubs = () => {
   };
 
   const categories = [
-    {
-      category: "Sports",
-      icon: ballImg,
-    },
-    {
-      category: "Technology",
-      icon: pcImg,
-    },
-    {
-      category: "Parents & Family",
-      icon: babyImg,
-    },
-    {
-      category: "Pets & Animals",
-      icon: catImg,
-    },
-    {
-      category: "Music",
-      icon: musicImg,
-    },
+    { category: "Sports", icon: ballImg },
+    { category: "Technology", icon: pcImg },
+    { category: "Parents & Family", icon: babyImg },
+    { category: "Pets & Animals", icon: catImg },
+    { category: "Music", icon: musicImg },
   ];
+
+  const containerVars = {
+    animate: { transition: { staggerChildren: 0.05 } },
+  };
+
+  const itemVars = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.2 } },
+  };
 
   return (
     <div className="max-w-[1232px] mx-auto px-4 pt-20 pb-30">
       <div className="flex flex-col gap-5 md:flex-row justify-between items-center">
         <h2 className="heading relative">Discover All Clubs</h2>
-        {/* sort  */}
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
@@ -81,13 +77,14 @@ const Clubs = () => {
           <option value="fee_high">Fee: High to Low</option>
         </select>
       </div>
-      <div className="flex flex-col gap-5 md:flex-row items-center justify-between  mt-6 ">
-        {/* category  */}
-        <div className="flex flex-wrap gap-3 md:gap-16 ">
-          <button
+
+      <div className="flex flex-col gap-5 md:flex-row items-center justify-between mt-6">
+        <div className="flex flex-wrap gap-3 md:gap-16">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={resetFilters}
-            className={`group cursor-pointer transition-all duration-300 flex flex-col items-center 
-      justify-center `}
+            className={`group cursor-pointer transition-all duration-300 flex flex-col items-center justify-center`}
           >
             <img
               className="w-8 duration-200 group-hover:-translate-y-1"
@@ -95,17 +92,21 @@ const Clubs = () => {
               alt="icon"
             />
             <p
-              className={`text-[12px] font-[Neusans-medium] mt-2  text-[#69696C]`}
+              className={`text-[12px] font-[Neusans-medium] mt-2 text-[#69696C]`}
             >
               All Clubs
             </p>
-          </button>
+          </motion.button>
+
           {categories.map((cat) => (
-            <div
+            <motion.div
               key={cat.category}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setActiveCategory(cat.category)}
-              className={`group cursor-pointer transition-all duration-300 flex flex-col items-center 
-      justify-center ${activeCategory === cat.category ? "scale-110" : ""}`}
+              className={`group cursor-pointer transition-all duration-300 flex flex-col items-center justify-center ${
+                activeCategory === cat.category ? "scale-110" : ""
+              }`}
             >
               <img
                 className="w-8 duration-200 group-hover:-translate-y-1"
@@ -113,15 +114,18 @@ const Clubs = () => {
                 alt="icon"
               />
               <p
-                className={`text-[12px] font-[Neusans-medium] mt-2 
-      ${activeCategory === cat.category ? "text-black" : "text-[#69696C]"}`}
+                className={`text-[12px] font-[Neusans-medium] mt-2 ${
+                  activeCategory === cat.category
+                    ? "text-black"
+                    : "text-[#69696C]"
+                }`}
               >
                 {cat.category}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
-        {/* search  */}
+
         <form className="input rounded-full bg-transparent outline-none hover:border-black/40 focus:border-black/40">
           <svg
             className="h-[1em] opacity-50"
@@ -150,32 +154,54 @@ const Clubs = () => {
       </div>
 
       <div className="divider mb-6"></div>
+
       {isLoading ? (
-        <>
-          <div className="flex items-center justify-center pb-24 md:pb-44 pt-24">
-            {" "}
-            <PulseLoader color="#7a66d3" margin={2} size={13} />
-          </div>
-        </>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center justify-center pb-24 md:pb-44 pt-24"
+        >
+          <PulseLoader color="#7a66d3" margin={2} size={13} />
+        </motion.div>
       ) : filteredClubs.length === 0 ? (
-        <div className="text-center py-20">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center py-20"
+        >
           <p className="text-lg text-gray-600 font-medium mb-4">
             No clubs found.
           </p>
-
           <button
             onClick={resetFilters}
             className="btn rounded-lg border border-black/20 hover:bg-black hover:text-white transition-all"
           >
             Load All
           </button>
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredClubs.map((club) => (
-            <ClubCard club={club} key={club._id} />
-          ))}
-        </div>
+        <motion.div
+          layout // This makes the grid reorganize smoothly
+          variants={containerVars}
+          initial="initial"
+          animate="animate"
+          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredClubs.map((club) => (
+              <motion.div
+                key={club._id}
+                layout
+                variants={itemVars}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <ClubCard club={club} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );

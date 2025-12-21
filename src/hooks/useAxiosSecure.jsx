@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_SITE_DOMAIN,
+  baseURL: "https://clubero-api-server.vercel.app",
 });
 
 const useAxiosSecure = () => {

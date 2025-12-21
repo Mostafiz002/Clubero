@@ -6,11 +6,11 @@ import JoinClubero from "../components/home/JoinClubero";
 
 const Home = () => {
   return (
-    <div >
-      <Banner/>
-      <LatestClubs/>
-      <UpcomingEvents/>
-      <JoinClubero/>
+    <div>
+      <Banner />
+      <LatestClubs />
+      <UpcomingEvents />
+      <JoinClubero />
     </div>
   );
 };

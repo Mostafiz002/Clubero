@@ -3,11 +3,14 @@ import React from "react";
 import useAxios from "../../hooks/useAxios";
 import EventCard from "../shared/EventCard";
 import { Link } from "react-router";
+// 1. Import Framer Motion
+import { motion } from "framer-motion";
+import { PulseLoader } from "react-spinners";
 
 const UpcomingEvents = () => {
   const axios = useAxios();
 
-  const { data: events = [] } = useQuery({
+  const { data: events = [], isLoading } = useQuery({
     queryKey: ["upcoming-events"],
     queryFn: async () => {
       const res = await axios("/events?limit=4");
@@ -15,21 +18,55 @@ const UpcomingEvents = () => {
     },
   });
 
+  // Animation variants
+  const containerVars = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Slightly slower stagger for a premium feel
+      },
+    },
+  };
+
+  const itemVars = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <PulseLoader color="#7a66d3" margin={2} size={13} />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[1232px] mx-auto px-4 pb-30">
-      <div className="flex justify-between items-center  mb-10">
-        <h2 className="heading relative">
+      <div className="flex justify-between items-center mb-10">
+        {/* Title animation */}
+        <motion.h2 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="heading relative"
+        >
           Upcoming club <span className="text-accent">events</span>
           <span className="inline-block absolute -top-3 -right-9">
-            <svg
+            <motion.svg
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
               xmlns="http://www.w3.org/2000/svg"
               width="40"
               height="40"
               viewBox="0 0 32 32"
               fill="none"
-              class="injected-svg text-[#ff4a79]  __web-inspector-hide-shortcut__"
-              data-src="https://secure.meetupstatic.com/next/images/scribbles/three-exclamative-lines.svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
+              className="injected-svg text-[#ff4a79]"
             >
               <title>threeExclamativeLines scribble</title>
               <path
@@ -44,22 +81,33 @@ const UpcomingEvents = () => {
                 d="M16.9444 16.2526C17.1923 16.1047 17.3037 15.8412 17.2936 15.5581C17.2831 15.2746 17.1449 14.988 16.9165 14.768C16.688 14.548 16.3964 14.4207 16.1127 14.4209C15.8294 14.4215 15.5703 14.5428 15.4318 14.796C15.3742 14.9009 15.3135 15.0027 15.2496 15.1014C15.0868 15.353 14.9035 15.5846 14.6995 15.7964C13.6954 16.8391 12.6302 17.8228 11.5956 18.8361C11.3549 19.072 11.1142 19.3079 10.8736 19.5438C10.7911 19.6246 10.7086 19.7055 10.6261 19.7864C10.427 19.9813 10.3163 20.2454 10.3216 20.524C10.3268 20.8023 10.4476 21.0722 10.6541 21.271C10.8605 21.4699 11.1348 21.5804 11.4131 21.575C11.6917 21.5699 11.9514 21.4493 12.1387 21.243C12.2164 21.1575 12.2941 21.0721 12.3718 20.9866C12.5985 20.7372 12.8251 20.4878 13.0517 20.2384C14.0253 19.1664 14.9682 18.0648 15.9723 17.0221C16.1763 16.8103 16.4009 16.6183 16.6461 16.4462C16.7423 16.3786 16.8418 16.3141 16.9444 16.2526Z"
                 fill="currentColor"
               ></path>
-            </svg>
+            </motion.svg>
           </span>
-        </h2>
+        </motion.h2>
+
         <Link
           onClick={() => window.scrollTo(0, 0)}
-          className="py-2 bg-transparent hover:bg-accent-content -mr-4  px-4 rounded-full text-accent font-[Neusans-medium]"
+          className="py-2 bg-transparent hover:bg-accent-content -mr-4 px-4 rounded-full text-accent font-[Neusans-medium] transition-all hover:translate-x-1"
           to="/events"
         >
           See all events
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      {/* Grid entrance animation */}
+      <motion.div 
+        variants={containerVars}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
         {events.map((event) => (
-          <EventCard event={event} key={event._id} />
+          <motion.div key={event._id} variants={itemVars}>
+            <EventCard event={event} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

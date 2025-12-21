@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_SITE_DOMAIN,
+  baseURL: "https://clubero-api-server.vercel.app",
 });
 
 const useAxios = () => {

@@ -3,11 +3,14 @@ import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import ClubCard from "../shared/ClubCard";
+import { PulseLoader } from "react-spinners";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const LatestClubs = () => {
   const axios = useAxios();
 
-  const { data: clubs = [] } = useQuery({
+  const { data: clubs = [], isLoading } = useQuery({
     queryKey: ["latest-clubs"],
     queryFn: async () => {
       const res = await axios("/latest-clubs");
@@ -15,9 +18,36 @@ const LatestClubs = () => {
     },
   });
 
+  const containerVars = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVars = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <PulseLoader color="#7a66d3" margin={2} size={13} />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[1232px] mx-auto px-4 pb-30">
-      <div className="flex justify-between items-center  mb-10">
+      <div className="flex justify-between items-center mb-10">
         <h2 className="heading relative">
           Discover the <span className="text-accent">latest clubs</span>
           <span className="inline-block absolute -top-3 -right-9">
@@ -27,9 +57,7 @@ const LatestClubs = () => {
               height="40"
               viewBox="0 0 32 32"
               fill="none"
-              class="injected-svg text-[#ff4a79]  __web-inspector-hide-shortcut__"
-              data-src="https://secure.meetupstatic.com/next/images/scribbles/three-exclamative-lines.svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
+              className="injected-svg text-[#ff4a79]"
             >
               <title>threeExclamativeLines scribble</title>
               <path
@@ -49,17 +77,25 @@ const LatestClubs = () => {
         </h2>
         <Link
           onClick={() => window.scrollTo(0, 0)}
-          className="py-2 bg-transparent hover:bg-accent-content -mr-4  px-4 rounded-full text-accent font-[Neusans-medium]"
+          className="py-2 bg-transparent hover:bg-accent-content -mr-4 px-4 rounded-full text-accent font-[Neusans-medium] transition-colors"
           to="/clubs"
         >
           See all clubs
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <motion.div
+        variants={containerVars}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
         {clubs.map((club) => (
-          <ClubCard club={club} key={club._id} />
+          <motion.div key={club._id} variants={cardVars}>
+            <ClubCard club={club} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

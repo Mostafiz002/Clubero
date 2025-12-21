@@ -11,7 +11,7 @@ const PaymentHistory = () => {
   const axiosSecure = useAxiosSecure();
 
   const { data: payments = [], isLoading } = useQuery({
-    queryKey: ["dashboard-payments", user?.email],
+    queryKey: ["dashboard-payment-history", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/payments?email=${user?.email}`);
       return res.data;
